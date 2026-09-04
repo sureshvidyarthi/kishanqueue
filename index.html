@@ -1,483 +1,1395 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KisanQueue — Smart Farmer Procurement</title>
+
+<title>KisanQueue — Less Waiting. More Farming.</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:#f7faf7;color:#13251a;overflow-x:hidden
+    color:#102719;
+    background:#f7faf7;
+    overflow-x:hidden;
 }
+
 :root{
     --green:#168447;
-    --dark:#092b19;
+    --green-dark:#092b19;
+    --green-light:#eaf7ed;
     --lime:#a7df68;
-    --soft:#eaf7ed;
-    --yellow:#ffd65a;
-    --muted:#65746a;
+    --text:#102719;
+    --muted:#6c7c71;
+    --border:#e1ebe3;
     --white:#fff;
 }
-.container{width:min(1180px,92%);margin:auto}
-header{
-    position:fixed;top:0;left:0;width:100%;z-index:1000;
-    background:rgba(255,255,255,.82);
-    backdrop-filter:blur(18px);
-    border-bottom:1px solid #e7eee8;
+
+/* ================= ICON ================= */
+
+.icon{
+    width:20px;
+    height:20px;
+    stroke:currentColor;
+    stroke-width:1.9;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
 }
+
+.icon-lg{
+    width:24px;
+    height:24px;
+}
+
+/* ================= NAVBAR ================= */
+
+.nav-wrap{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:1000;
+    padding:16px 5%;
+}
+
 .nav{
-    height:76px;display:flex;align-items:center;justify-content:space-between
+    max-width:1180px;
+    height:66px;
+    margin:auto;
+    padding:0 10px 0 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(255,255,255,.84);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.8);
+    border-radius:18px;
+    box-shadow:0 12px 40px rgba(12,45,25,.07);
 }
+
 .logo{
-    display:flex;align-items:center;gap:10px;font-size:21px;font-weight:800;
-    color:var(--dark)
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--green-dark);
+    font-size:19px;
+    font-weight:900;
 }
-.logo-icon{
-    width:42px;height:42px;border-radius:13px;background:var(--green);
-    display:grid;place-items:center;color:white;font-size:23px;
-    box-shadow:0 10px 25px #16844735
+
+.logo-box{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    color:white;
+    background:var(--green);
 }
-nav{display:flex;gap:30px}
-nav a{text-decoration:none;color:#4b5a50;font-size:14px;font-weight:600}
-nav a:hover{color:var(--green)}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#64746a;
+    font-size:13px;
+    font-weight:700;
+    transition:.25s;
+}
+
+.nav-links a:hover{
+    color:var(--green);
+}
+
 .nav-btn{
-    text-decoration:none;background:var(--dark);color:white;padding:12px 20px;
-    border-radius:12px;font-weight:700;font-size:14px
+    text-decoration:none;
+    background:var(--green-dark);
+    color:white;
+    padding:11px 17px;
+    border-radius:11px;
+    font-size:12px;
+    font-weight:800;
 }
+
+/* ================= HERO ================= */
 
 .hero{
-    min-height:760px;padding-top:145px;
+    min-height:100vh;
+    padding:150px 5% 90px;
+    display:flex;
+    align-items:center;
     background:
-      radial-gradient(circle at 85% 25%,#dff7c9 0,transparent 25%),
-      radial-gradient(circle at 10% 60%,#e2f5e8 0,transparent 25%);
-    position:relative
+        radial-gradient(circle at 80% 20%,#dff4df 0,transparent 35%),
+        radial-gradient(circle at 15% 80%,#eef8e8 0,transparent 30%);
 }
+
 .hero-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center
+    max-width:1180px;
+    width:100%;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:70px;
+    align-items:center;
 }
+
 .badge{
-    display:inline-flex;align-items:center;gap:8px;background:#e9f7ed;
-    color:var(--green);padding:9px 14px;border-radius:30px;
-    font-size:13px;font-weight:800;margin-bottom:20px;
-    animation:pulse 2.5s infinite
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:30px;
+    background:#e7f6e9;
+    color:var(--green);
+    font-size:11px;
+    font-weight:900;
+    margin-bottom:20px;
 }
-.dot{width:8px;height:8px;background:#22c55e;border-radius:50%;box-shadow:0 0 0 6px #22c55e20}
-h1{
-    font-size:clamp(44px,6vw,72px);line-height:1.02;letter-spacing:-3px;
-    color:var(--dark);max-width:650px
+
+.badge-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 5px #16844718;
 }
-h1 span{color:var(--green)}
+
+.hero h1{
+    font-size:clamp(46px,6vw,76px);
+    line-height:.98;
+    letter-spacing:-4px;
+    color:var(--green-dark);
+}
+
+.hero h1 span{
+    color:var(--green);
+}
+
 .hero-text{
-    font-size:18px;line-height:1.8;color:var(--muted);
-    max-width:590px;margin:25px 0 30px
+    max-width:560px;
+    color:var(--muted);
+    font-size:16px;
+    line-height:1.75;
+    margin:25px 0;
 }
-.actions{display:flex;gap:14px;flex-wrap:wrap}
+
+.actions{
+    display:flex;
+    gap:12px;
+}
+
 .btn{
-    border:0;text-decoration:none;padding:15px 23px;border-radius:13px;
-    font-weight:800;cursor:pointer;transition:.3s;display:inline-flex;align-items:center;gap:8px
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:14px 20px;
+    border-radius:13px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:800;
+    transition:.3s;
 }
-.btn-primary{background:var(--green);color:white;box-shadow:0 12px 30px #16844730}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 35px #16844740}
-.btn-light{background:white;color:var(--dark);border:1px solid #dce7de}
-.btn-light:hover{transform:translateY(-3px)}
+
+.btn-primary{
+    background:var(--green);
+    color:white;
+    box-shadow:0 15px 35px #1684472b;
+}
+
+.btn-primary:hover{
+    transform:translateY(-3px);
+}
+
+.btn-secondary{
+    color:var(--green-dark);
+    border:1px solid var(--border);
+    background:white;
+}
+
+/* ================= DASHBOARD PREVIEW ================= */
+
+.preview-wrap{
+    position:relative;
+}
+
+.preview-glow{
+    position:absolute;
+    inset:-40px;
+    background:#8fdb8b22;
+    filter:blur(50px);
+    border-radius:50%;
+    z-index:-1;
+}
 
 .dashboard-preview{
-    background:#092b19;border-radius:28px;padding:22px;
-    box-shadow:0 30px 80px #092b1935;
-    transform:rotate(1.5deg);animation:float 5s ease-in-out infinite
+    background:white;
+    border:1px solid #dfe9e1;
+    border-radius:28px;
+    padding:18px;
+    box-shadow:0 35px 80px rgba(20,60,32,.13);
+    transform:rotate(1deg);
 }
-.preview-top{display:flex;justify-content:space-between;align-items:center;color:white;margin-bottom:20px}
-.preview-title{font-weight:800}
-.live{font-size:11px;background:#1d9d55;padding:7px 10px;border-radius:20px}
-.queue-card{
-    background:linear-gradient(135deg,#164a2c,#0e3820);
-    border:1px solid #ffffff14;border-radius:20px;padding:24px;color:white
+
+.preview-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:6px 5px 18px;
 }
-.queue-label{color:#a8c1af;font-size:13px}
-.queue-number{font-size:70px;font-weight:900;margin:7px 0}
-.queue-meta{display:flex;justify-content:space-between;color:#a8c1af;font-size:13px}
-.progress{height:8px;background:#ffffff14;border-radius:20px;margin-top:20px;overflow:hidden}
-.progress i{display:block;height:100%;width:72%;background:var(--lime);border-radius:20px;animation:progress 2s ease}
-.preview-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+
+.preview-brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:900;
+    font-size:13px;
+}
+
+.preview-brand-icon{
+    width:28px;
+    height:28px;
+    background:var(--green);
+    color:white;
+    border-radius:8px;
+    display:grid;
+    place-items:center;
+}
+
+.preview-user{
+    width:30px;
+    height:30px;
+    background:#e9f6eb;
+    color:var(--green);
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+}
+
+.preview-card{
+    border-radius:20px;
+    padding:25px;
+    background:linear-gradient(135deg,#092b19,#14552f);
+    color:white;
+}
+
+.preview-label{
+    color:#9eb3a5;
+    font-size:10px;
+    font-weight:700;
+}
+
+.queue-number{
+    font-size:72px;
+    line-height:1;
+    font-weight:900;
+    margin:10px 0;
+}
+
+.queue-text{
+    color:#b5c8bb;
+    font-size:11px;
+}
+
+.queue-line{
+    height:7px;
+    border-radius:20px;
+    background:#ffffff16;
+    overflow:hidden;
+    margin-top:20px;
+}
+
+.queue-line i{
+    display:block;
+    width:72%;
+    height:100%;
+    background:var(--lime);
+    border-radius:20px;
+}
+
+.preview-stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin-top:10px;
+}
+
 .mini{
-    padding:17px;background:#ffffff0d;border:1px solid #ffffff12;
-    border-radius:17px;color:white
+    padding:15px;
+    background:#f7faf7;
+    border:1px solid #e8eee9;
+    border-radius:15px;
 }
-.mini small{color:#91aa99}.mini strong{display:block;font-size:20px;margin-top:5px}
+
+.mini small{
+    color:#7a887f;
+    font-size:9px;
+}
+
+.mini strong{
+    display:block;
+    margin-top:5px;
+    color:var(--green-dark);
+    font-size:17px;
+}
+
+/* ================= STATS ================= */
 
 .stats{
-    background:white;border-top:1px solid #edf1ed;border-bottom:1px solid #edf1ed;
-    padding:28px 0
+    background:var(--green-dark);
+    color:white;
+    padding:25px 5%;
 }
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.stat{text-align:center;border-right:1px solid #e5ebe6}
-.stat:last-child{border:0}
-.stat strong{font-size:30px;color:var(--dark)}
-.stat span{display:block;color:#78857c;font-size:13px;margin-top:5px}
 
-.section{padding:105px 0}
-.section-head{text-align:center;max-width:680px;margin:0 auto 55px}
+.stats-grid{
+    max-width:1000px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+}
+
+.stat{
+    text-align:center;
+    padding:12px;
+    border-right:1px solid #ffffff14;
+}
+
+.stat:last-child{
+    border:0;
+}
+
+.stat strong{
+    display:block;
+    font-size:29px;
+}
+
+.stat span{
+    color:#91a79a;
+    font-size:11px;
+}
+
+/* ================= SECTIONS ================= */
+
+.section{
+    padding:105px 5%;
+}
+
+.section-inner{
+    max-width:1180px;
+    margin:auto;
+}
+
+.section-head{
+    max-width:650px;
+    margin-bottom:50px;
+}
+
 .eyebrow{
-    color:var(--green);font-size:12px;font-weight:900;letter-spacing:1.5px;
-    text-transform:uppercase;margin-bottom:12px
+    color:var(--green);
+    text-transform:uppercase;
+    letter-spacing:1.8px;
+    font-size:10px;
+    font-weight:900;
+    margin-bottom:10px;
 }
-.section h2{font-size:42px;letter-spacing:-1.5px;color:var(--dark)}
-.section-head p{color:var(--muted);line-height:1.7;margin-top:15px}
 
-.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.problem{
-    background:white;border:1px solid #e5ece6;border-radius:22px;padding:28px;
-    transition:.35s
+.section h2{
+    color:var(--green-dark);
+    font-size:43px;
+    line-height:1.08;
+    letter-spacing:-2px;
 }
-.problem:hover{transform:translateY(-8px);box-shadow:0 20px 50px #153b2012}
-.problem-icon{font-size:34px;margin-bottom:20px}
-.problem h3{margin-bottom:10px;color:var(--dark)}
-.problem p{color:var(--muted);line-height:1.7;font-size:14px}
 
-.feature-section{background:#092b19;color:white}
-.feature-section .section-head p{color:#a9baae}
-.feature-section h2{color:white}
-.features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.section-head p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.7;
+    margin-top:15px;
+}
+
+/* ================= PROBLEM ================= */
+
+.problem-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:17px;
+}
+
+.problem-card{
+    padding:30px;
+    background:white;
+    border:1px solid var(--border);
+    border-radius:21px;
+    transition:.3s;
+}
+
+.problem-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 20px 45px #15351d0c;
+}
+
+.problem-icon{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    background:#eaf7ed;
+    color:var(--green);
+    display:grid;
+    place-items:center;
+    margin-bottom:20px;
+}
+
+.problem-card h3{
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.problem-card p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.7;
+}
+
+/* ================= FEATURES ================= */
+
+.features{
+    background:#f0f6f1;
+}
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
 .feature{
-    padding:26px;border:1px solid #ffffff12;background:#ffffff08;
-    border-radius:22px;transition:.35s
+    background:white;
+    border-radius:20px;
+    padding:24px;
+    border:1px solid var(--border);
 }
-.feature:hover{background:#ffffff12;transform:translateY(-7px)}
-.feature-icon{font-size:32px;margin-bottom:20px}
-.feature h3{margin-bottom:10px}
-.feature p{color:#9fb3a5;font-size:14px;line-height:1.7}
 
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.step{position:relative;padding:25px}
-.step-num{
-    width:46px;height:46px;border-radius:50%;background:var(--green);
-    color:white;display:grid;place-items:center;font-weight:900;margin-bottom:18px
+.feature-icon{
+    width:45px;
+    height:45px;
+    display:grid;
+    place-items:center;
+    color:var(--green);
+    background:#eaf7ed;
+    border-radius:13px;
+    margin-bottom:18px;
 }
-.step h3{margin-bottom:9px}.step p{font-size:14px;color:var(--muted);line-height:1.7}
 
-.live-section{background:#eef8ef}
-.centres{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.centre{
-    background:white;border-radius:22px;padding:24px;border:1px solid #dfebe1
+.feature h3{
+    font-size:15px;
+    margin-bottom:8px;
 }
-.centre-head{display:flex;justify-content:space-between;margin-bottom:18px}
-.status{color:#168447;background:#e9f7ed;padding:6px 9px;border-radius:20px;font-size:11px;font-weight:800}
-.centre h3{color:var(--dark)}
-.centre p{color:var(--muted);font-size:13px;margin-top:6px}
-.centre-row{display:flex;justify-content:space-between;margin-top:20px;font-size:13px}
-.centre-row strong{color:var(--dark)}
-.centre-progress{height:7px;background:#edf2ee;border-radius:20px;margin-top:9px;overflow:hidden}
-.centre-progress i{display:block;width:65%;height:100%;background:var(--green);border-radius:20px}
+
+.feature p{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.7;
+}
+
+/* ================= STEPS ================= */
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.step{
+    position:relative;
+    padding:25px;
+    border:1px solid var(--border);
+    background:white;
+    border-radius:20px;
+}
+
+.step-number{
+    color:var(--green);
+    font-size:11px;
+    font-weight:900;
+    margin-bottom:30px;
+}
+
+.step h3{
+    font-size:16px;
+    margin-bottom:7px;
+}
+
+.step p{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.6;
+}
+
+/* ================= CTA ================= */
 
 .cta{
-    padding:80px 0;background:linear-gradient(135deg,#a9e36e,#d8f5b8)
+    margin:0 5% 80px;
+    border-radius:30px;
+    padding:70px 7%;
+    background:linear-gradient(135deg,#092b19,#155b32);
+    color:white;
+    position:relative;
+    overflow:hidden;
 }
-.cta-box{text-align:center}.cta h2{font-size:45px;color:var(--dark);margin-bottom:14px}
-.cta p{color:#42604a;margin-bottom:25px}
 
-footer{background:#061c10;color:white;padding:65px 0 25px}
-.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
-footer p,footer a{color:#91a69a;font-size:14px;line-height:1.8;text-decoration:none}
-footer h4{margin-bottom:16px}
-.footer-logo{margin-bottom:15px}
-.copy{border-top:1px solid #ffffff12;margin-top:45px;padding-top:20px;color:#71877a;font-size:12px}
-
-.reveal{opacity:0;transform:translateY(30px);transition:.8s}
-.reveal.show{opacity:1;transform:none}
-
-@keyframes float{50%{transform:rotate(-1deg) translateY(-12px)}}
-@keyframes pulse{50%{transform:scale(1.03)}}
-@keyframes progress{from{width:0}to{width:72%}}
-
-@media(max-width:850px){
-    nav{display:none}
-    .hero-grid{grid-template-columns:1fr}
-    .hero{padding-top:120px}
-    .dashboard-preview{margin-top:20px}
-    .stat-grid{grid-template-columns:1fr 1fr}
-    .stat:nth-child(2){border:0}
-    .problem-grid,.features,.steps,.centres{grid-template-columns:1fr 1fr}
-    .footer-grid{grid-template-columns:1fr 1fr}
+.cta::after{
+    content:"";
+    position:absolute;
+    width:400px;
+    height:400px;
+    right:-130px;
+    top:-180px;
+    border-radius:50%;
+    background:#a7df6810;
 }
-@media(max-width:550px){
-    h1{font-size:45px}
-    .section h2,.cta h2{font-size:34px}
-    .problem-grid,.features,.steps,.centres,.footer-grid{grid-template-columns:1fr}
-    .stat-grid{grid-template-columns:1fr 1fr}
-    .stat{border:0}
+
+.cta h2{
+    color:white;
+    max-width:600px;
+}
+
+.cta p{
+    max-width:560px;
+    color:#a9bdb0;
+    margin:15px 0 25px;
+    line-height:1.7;
+    font-size:13px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    background:#061d11;
+    color:white;
+    padding:60px 5% 30px;
+}
+
+.footer-grid{
+    max-width:1180px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1fr 1fr;
+    gap:40px;
+}
+
+.footer-brand p{
+    color:#80988a;
+    font-size:11px;
+    line-height:1.7;
+    max-width:300px;
+    margin-top:14px;
+}
+
+.footer-col h4{
+    font-size:12px;
+    margin-bottom:15px;
+}
+
+.footer-col a{
+    display:block;
+    color:#80988a;
+    text-decoration:none;
+    font-size:11px;
+    margin:10px 0;
+}
+
+.footer-bottom{
+    max-width:1180px;
+    margin:45px auto 0;
+    padding-top:20px;
+    border-top:1px solid #ffffff10;
+    color:#60776a;
+    font-size:10px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+    .hero-grid{
+        grid-template-columns:1fr;
+        gap:50px;
+    }
+
+    .hero{
+        padding-top:125px;
+    }
+
+    .feature-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .steps{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .stats-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .stat:nth-child(2){
+        border-right:0;
+    }
+
+    .stat{
+        margin:7px 0;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:650px){
+
+    .nav-wrap{
+        padding:10px 12px;
+    }
+
+    .nav{
+        height:60px;
+        padding-left:12px;
+    }
+
+    .logo{
+        font-size:16px;
+    }
+
+    .logo-box{
+        width:36px;
+        height:36px;
+    }
+
+    .nav-links{
+        display:none;
+    }
+
+    .nav-btn{
+        padding:10px 12px;
+        font-size:10px;
+    }
+
+    .hero{
+        padding:105px 17px 65px;
+        min-height:auto;
+    }
+
+    .hero h1{
+        font-size:clamp(43px,13vw,58px);
+        letter-spacing:-3px;
+    }
+
+    .hero-text{
+        font-size:14px;
+        line-height:1.7;
+    }
+
+    .actions{
+        display:grid;
+        grid-template-columns:1fr;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+    .dashboard-preview{
+        transform:none;
+        padding:13px;
+        border-radius:22px;
+    }
+
+    .queue-number{
+        font-size:57px;
+    }
+
+    .preview-card{
+        padding:21px;
+    }
+
+    .preview-stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .section{
+        padding:75px 17px;
+    }
+
+    .section h2{
+        font-size:32px;
+        letter-spacing:-1.4px;
+    }
+
+    .problem-grid,
+    .feature-grid,
+    .steps{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        padding:18px 12px;
+    }
+
+    .stat strong{
+        font-size:23px;
+    }
+
+    .stat span{
+        font-size:9px;
+    }
+
+    .cta{
+        margin:0 14px 55px;
+        padding:45px 25px;
+        border-radius:23px;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr 1fr;
+        gap:28px 20px;
+    }
+}
+
+@media(max-width:400px){
+
+    .logo{
+        font-size:15px;
+    }
+
+    .nav-btn{
+        font-size:9px;
+        padding:9px 10px;
+    }
+
+    .hero h1{
+        font-size:42px;
+    }
+
+    .preview-stats{
+        gap:6px;
+    }
+
+    .mini{
+        padding:12px;
+    }
+
+    .mini strong{
+        font-size:15px;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<div class="container nav">
-    <div class="logo">
-        <div class="logo-icon">🌾</div>
-        KisanQueue
-    </div>
+<!-- SVG ICONS -->
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#features">Features</a>
-        <a href="#how">How it Works</a>
-        <a href="#centres">Centres</a>
-    </nav>
+<svg style="display:none">
+<symbol id="leaf" viewBox="0 0 24 24">
+    <path d="M20 4C12 4 5 8 5 16c0 2 1 4 3 4 8 0 12-7 12-16Z"/>
+    <path d="M4 20c3-4 7-7 12-9"/>
+</symbol>
 
-    <a href="dashboard.html" class="nav-btn">Farmer Dashboard →</a>
+<symbol id="arrow" viewBox="0 0 24 24">
+    <path d="M5 12h14"/>
+    <path d="m13 6 6 6-6 6"/>
+</symbol>
+
+<symbol id="clock" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M12 7v5l3 2"/>
+</symbol>
+
+<symbol id="info" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M12 10v6"/>
+    <path d="M12 7h.01"/>
+</symbol>
+
+<symbol id="calendar" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="16" rx="2"/>
+    <path d="M16 3v4M8 3v4M3 10h18"/>
+</symbol>
+
+<symbol id="bell" viewBox="0 0 24 24">
+    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+    <path d="M10 21h4"/>
+</symbol>
+
+<symbol id="wallet" viewBox="0 0 24 24">
+    <path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6"/>
+    <path d="M2 6a3 3 0 0 1 3-3h13"/>
+    <path d="M17 13h.01"/>
+</symbol>
+</svg>
+
+
+<!-- NAV -->
+
+<div class="nav-wrap">
+
+<nav class="nav">
+
+<a href="#" class="logo">
+
+<div class="logo-box">
+<svg class="icon">
+<use href="#leaf"/>
+</svg>
 </div>
-</header>
 
-<main id="home">
+KisanQueue
+
+</a>
+
+
+<div class="nav-links">
+
+<a href="#features">Features</a>
+<a href="#how">How it Works</a>
+<a href="#centres">Centres</a>
+
+</div>
+
+
+<a href="dashboard.html" class="nav-btn">
+Farmer Dashboard →
+</a>
+
+</nav>
+
+</div>
+
+
+<!-- HERO -->
 
 <section class="hero">
-<div class="container hero-grid">
+
+<div class="hero-grid">
 
 <div>
-    <div class="badge"><span class="dot"></span> Smart Procurement Platform</div>
 
-    <h1>Less Waiting.<br><span>More Farming.</span></h1>
-
-    <p class="hero-text">
-        KisanQueue helps farmers book procurement slots, track their live queue,
-        receive important notifications and monitor procurement & payment status —
-        all from one simple platform.
-    </p>
-
-    <div class="actions">
-        <a href="dashboard.html" class="btn btn-primary">🚜 Book a Slot</a>
-        <a href="#features" class="btn btn-light">Explore Platform ↓</a>
-    </div>
+<div class="badge">
+<span class="badge-dot"></span>
+LIVE PROCUREMENT NETWORK
 </div>
+
+<h1>
+Less Waiting.<br>
+<span>More Farming.</span>
+</h1>
+
+<p class="hero-text">
+KisanQueue helps farmers book procurement slots,
+track their live queue, receive timely alerts and
+know exactly when their payment is on the way.
+</p>
+
+
+<div class="actions">
+
+<a href="dashboard.html" class="btn btn-primary">
+Open Farmer Dashboard
+
+<svg class="icon">
+<use href="#arrow"/>
+</svg>
+
+</a>
+
+<a href="#how" class="btn btn-secondary">
+See How It Works
+</a>
+
+</div>
+
+</div>
+
+
+<!-- PREVIEW -->
+
+<div class="preview-wrap">
+
+<div class="preview-glow"></div>
 
 <div class="dashboard-preview">
-    <div class="preview-top">
-        <div class="preview-title">Today's Procurement</div>
-        <div class="live">● LIVE</div>
-    </div>
 
-    <div class="queue-card">
-        <div class="queue-label">Your Queue Position</div>
-        <div class="queue-number" id="queueNo">18</div>
+<div class="preview-top">
 
-        <div class="queue-meta">
-            <span>👨‍🌾 17 farmers ahead</span>
-            <span>≈ 42 min</span>
-        </div>
+<div class="preview-brand">
 
-        <div class="progress"><i></i></div>
-    </div>
+<div class="preview-brand-icon">
+<svg class="icon">
+<use href="#leaf"/>
+</svg>
+</div>
 
-    <div class="preview-stats">
-        <div class="mini">
-            <small>Today's Slot</small>
-            <strong>10:30 AM</strong>
-        </div>
-        <div class="mini">
-            <small>Centre Status</small>
-            <strong>Open ✓</strong>
-        </div>
-    </div>
+KisanQueue
+
+</div>
+
+<div class="preview-user">
+<svg class="icon">
+<use href="#info"/>
+</svg>
 </div>
 
 </div>
+
+
+<div class="preview-card">
+
+<div class="preview-label">
+LIVE QUEUE POSITION
+</div>
+
+<div class="queue-number" id="queueNumber">
+18
+</div>
+
+<div class="queue-text">
+Krishi Seva Centre · Nashik
+</div>
+
+<div class="queue-line">
+<i></i>
+</div>
+
+</div>
+
+
+<div class="preview-stats">
+
+<div class="mini">
+<small>Estimated Turn</small>
+<strong>~42 min</strong>
+</div>
+
+<div class="mini">
+<small>Farmers Ahead</small>
+<strong>17</strong>
+</div>
+
+<div class="mini">
+<small>Status</small>
+<strong style="color:#168447">Open</strong>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </section>
+
+
+<!-- STATS -->
 
 <section class="stats">
-<div class="container stat-grid">
-    <div class="stat"><strong data-count="12000">0+</strong><span>Farmers Served</span></div>
-    <div class="stat"><strong data-count="48">0+</strong><span>Procurement Centres</span></div>
-    <div class="stat"><strong data-count="37">0%</strong><span>Less Waiting Time</span></div>
-    <div class="stat"><strong data-count="98">0%</strong><span>Payment Tracking</span></div>
+
+<div class="stats-grid">
+
+<div class="stat">
+<strong>12K+</strong>
+<span>Farmers Connected</span>
 </div>
+
+<div class="stat">
+<strong>48</strong>
+<span>Procurement Centres</span>
+</div>
+
+<div class="stat">
+<strong>36K+</strong>
+<span>Slots Managed</span>
+</div>
+
+<div class="stat">
+<strong>82%</strong>
+<span>Less Waiting Time</span>
+</div>
+
+</div>
+
 </section>
 
-<section class="section reveal">
-<div class="container">
+
+<!-- PROBLEM -->
+
+<section class="section">
+
+<div class="section-inner">
+
 <div class="section-head">
-    <div class="eyebrow">The Problem</div>
-    <h2>Farmers deserve a better procurement experience.</h2>
-    <p>
-        Long queues, uncertain schedules and limited status information
-        waste valuable time during the harvest season.
-    </p>
+
+<div class="eyebrow">
+The Problem
 </div>
+
+<h2>
+Procurement shouldn't mean spending the whole day waiting.
+</h2>
+
+<p>
+Farmers deserve visibility, predictability and a better
+procurement experience.
+</p>
+
+</div>
+
 
 <div class="problem-grid">
-    <div class="problem">
-        <div class="problem-icon">⏳</div>
-        <h3>Long Waiting</h3>
-        <p>Farmers often spend hours at procurement centres waiting for their turn.</p>
-    </div>
-    <div class="problem">
-        <div class="problem-icon">❓</div>
-        <h3>No Real-Time Information</h3>
-        <p>Farmers don't know how many people are ahead or when their turn will arrive.</p>
-    </div>
-    <div class="problem">
-        <div class="problem-icon">💰</div>
-        <h3>Payment Uncertainty</h3>
-        <p>After procurement, tracking payment status can be difficult and confusing.</p>
-    </div>
+
+<div class="problem-card">
+
+<div class="problem-icon">
+<svg class="icon-lg">
+<use href="#clock"/>
+</svg>
 </div>
+
+<h3>Long Waiting</h3>
+
+<p>
+Farmers often spend hours at procurement centres
+without knowing their exact turn.
+</p>
+
 </div>
+
+
+<div class="problem-card">
+
+<div class="problem-icon">
+<svg class="icon-lg">
+<use href="#info"/>
+</svg>
+</div>
+
+<h3>No Real-Time Information</h3>
+
+<p>
+Without live queue information, planning the day
+becomes difficult and uncertain.
+</p>
+
+</div>
+
+
+<div class="problem-card">
+
+<div class="problem-icon">
+<svg class="icon-lg">
+<use href="#wallet"/>
+</svg>
+</div>
+
+<h3>Payment Uncertainty</h3>
+
+<p>
+Farmers need a clear view of procurement completion
+and payment progress.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
 </section>
 
-<section class="section feature-section reveal" id="features">
-<div class="container">
+
+<!-- FEATURES -->
+
+<section class="section features" id="features">
+
+<div class="section-inner">
+
 <div class="section-head">
-    <div class="eyebrow">Smart Solution</div>
-    <h2>Everything a farmer needs.</h2>
-    <p>One platform connecting farmers with procurement centres.</p>
+
+<div class="eyebrow">
+One Simple Platform
 </div>
 
-<div class="features">
-    <div class="feature"><div class="feature-icon">📅</div><h3>Slot Booking</h3><p>Choose your preferred procurement date and time slot before visiting the centre.</p></div>
-    <div class="feature"><div class="feature-icon">📍</div><h3>Live Queue</h3><p>See your live position and estimated waiting time in real time.</p></div>
-    <div class="feature"><div class="feature-icon">🔔</div><h3>Smart Alerts</h3><p>Get reminders and important procurement updates instantly.</p></div>
-    <div class="feature"><div class="feature-icon">💳</div><h3>Payment Tracking</h3><p>Track procurement completion and payment status from your dashboard.</p></div>
+<h2>
+Everything a farmer needs before, during and after procurement.
+</h2>
+
 </div>
+
+
+<div class="feature-grid">
+
+<div class="feature">
+
+<div class="feature-icon">
+<svg class="icon">
+<use href="#calendar"/>
+</svg>
 </div>
+
+<h3>Slot Booking</h3>
+
+<p>
+Choose your preferred centre, crop, date and available
+procurement slot.
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+<svg class="icon">
+<use href="#clock"/>
+</svg>
+</div>
+
+<h3>Live Queue</h3>
+
+<p>
+Know your exact queue position and estimated turn time
+in real time.
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+<svg class="icon">
+<use href="#bell"/>
+</svg>
+</div>
+
+<h3>Smart Alerts</h3>
+
+<p>
+Receive timely notifications when your slot or queue
+status changes.
+</p>
+
+</div>
+
+
+<div class="feature">
+
+<div class="feature-icon">
+<svg class="icon">
+<use href="#wallet"/>
+</svg>
+</div>
+
+<h3>Payment Tracking</h3>
+
+<p>
+Track procurement value, verification and payment
+progress from one place.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
 </section>
 
-<section class="section reveal" id="how">
-<div class="container">
+
+<!-- HOW -->
+
+<section class="section" id="how">
+
+<div class="section-inner">
+
 <div class="section-head">
-    <div class="eyebrow">Simple Process</div>
-    <h2>From booking to payment.</h2>
+
+<div class="eyebrow">
+How It Works
 </div>
+
+<h2>
+Four simple steps. Zero unnecessary waiting.
+</h2>
+
+</div>
+
 
 <div class="steps">
-    <div class="step"><div class="step-num">01</div><h3>Register</h3><p>Create your farmer profile with basic details.</p></div>
-    <div class="step"><div class="step-num">02</div><h3>Book Slot</h3><p>Select your crop, centre and convenient time slot.</p></div>
-    <div class="step"><div class="step-num">03</div><h3>Track Queue</h3><p>Arrive at the centre and monitor your position live.</p></div>
-    <div class="step"><div class="step-num">04</div><h3>Get Paid</h3><p>Track procurement completion and payment status.</p></div>
+
+<div class="step">
+<div class="step-number">01</div>
+<h3>Register</h3>
+<p>Create your farmer profile and verify your details.</p>
 </div>
+
+<div class="step">
+<div class="step-number">02</div>
+<h3>Book a Slot</h3>
+<p>Select centre, crop, quantity and preferred time.</p>
 </div>
+
+<div class="step">
+<div class="step-number">03</div>
+<h3>Track Queue</h3>
+<p>Monitor your live queue position from your phone.</p>
+</div>
+
+<div class="step">
+<div class="step-number">04</div>
+<h3>Get Paid</h3>
+<p>Track procurement completion and payment status.</p>
+</div>
+
+</div>
+
+</div>
+
 </section>
 
-<section class="section live-section reveal" id="centres">
-<div class="container">
-<div class="section-head">
-    <div class="eyebrow">Live Network</div>
-    <h2>Procurement centres at a glance.</h2>
-</div>
 
-<div class="centres">
-    <div class="centre">
-        <div class="centre-head"><div><h3>Krishi Seva Centre</h3><p>Nashik District</p></div><span class="status">OPEN</span></div>
-        <div class="centre-row"><span>Queue</span><strong>18 farmers</strong></div>
-        <div class="centre-progress"><i></i></div>
-        <div class="centre-row"><span>Avg. Wait</span><strong>42 min</strong></div>
-    </div>
-
-    <div class="centre">
-        <div class="centre-head"><div><h3>Agri Procurement Hub</h3><p>Pune District</p></div><span class="status">OPEN</span></div>
-        <div class="centre-row"><span>Queue</span><strong>11 farmers</strong></div>
-        <div class="centre-progress"><i style="width:42%"></i></div>
-        <div class="centre-row"><span>Avg. Wait</span><strong>25 min</strong></div>
-    </div>
-
-    <div class="centre">
-        <div class="centre-head"><div><h3>Kisan Suvidha Centre</h3><p>Ahmednagar</p></div><span class="status">OPEN</span></div>
-        <div class="centre-row"><span>Queue</span><strong>24 farmers</strong></div>
-        <div class="centre-progress"><i style="width:78%"></i></div>
-        <div class="centre-row"><span>Avg. Wait</span><strong>55 min</strong></div>
-    </div>
-</div>
-</div>
-</section>
+<!-- CTA -->
 
 <section class="cta">
-<div class="container cta-box">
-    <h2>Stop waiting. Start planning.</h2>
-    <p>Book your procurement slot and reach the centre at the right time.</p>
-    <a href="dashboard.html" class="btn btn-primary">🚜 Open Farmer Dashboard</a>
-</div>
+
+<h2>
+Your time belongs on your farm — not in a queue.
+</h2>
+
+<p>
+Book your procurement slot, track your position and
+stay informed every step of the way.
+</p>
+
+<a href="dashboard.html" class="btn btn-primary">
+Go to Farmer Dashboard
+<svg class="icon"><use href="#arrow"/></svg>
+</a>
+
 </section>
 
-</main>
+
+<!-- FOOTER -->
 
 <footer>
-<div class="container">
+
 <div class="footer-grid">
-    <div>
-        <div class="logo footer-logo"><div class="logo-icon">🌾</div>KisanQueue</div>
-        <p>A smart digital platform designed to make farmer procurement faster, simpler and more transparent.</p>
-    </div>
 
-    <div>
-        <h4>Platform</h4>
-        <p><a href="#features">Features</a></p>
-        <p><a href="#how">How it Works</a></p>
-        <p><a href="#centres">Procurement Centres</a></p>
-    </div>
+<div class="footer-brand">
 
-    <div>
-        <h4>For Farmers</h4>
-        <p><a href="dashboard.html">Dashboard</a></p>
-        <p><a href="dashboard.html">Book a Slot</a></p>
-        <p><a href="dashboard.html">Track Queue</a></p>
-    </div>
+<a href="#" class="logo" style="color:white">
 
-    <div>
-        <h4>Support</h4>
-        <p>📞 1800-KISAN</p>
-        <p>✉️ support@kisanqueue.demo</p>
-        <p>Mon–Sat · 9 AM–6 PM</p>
-    </div>
+<div class="logo-box">
+<svg class="icon">
+<use href="#leaf"/>
+</svg>
 </div>
 
-<div class="copy">© 2026 KisanQueue · Smart Procurement Platform · Frontend Demo</div>
+KisanQueue
+
+</a>
+
+<p>
+A smarter procurement experience built to reduce
+waiting time and uncertainty for farmers.
+</p>
+
 </div>
+
+
+<div class="footer-col">
+
+<h4>Platform</h4>
+
+<a href="#features">Features</a>
+<a href="#how">How it Works</a>
+<a href="dashboard.html">Dashboard</a>
+
+</div>
+
+
+<div class="footer-col">
+
+<h4>For Farmers</h4>
+
+<a href="#">Register</a>
+<a href="#">Book Slot</a>
+<a href="#">Track Queue</a>
+
+</div>
+
+
+<div class="footer-col">
+
+<h4>Support</h4>
+
+<a href="#">Help Centre</a>
+<a href="#">Contact</a>
+<a href="#">FAQs</a>
+
+</div>
+
+</div>
+
+
+<div class="footer-bottom">
+© 2026 KisanQueue. Built for smarter agricultural procurement.
+</div>
+
 </footer>
 
+
 <script>
-const observer=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-        if(e.isIntersecting)e.target.classList.add("show");
-    });
-},{threshold:.12});
 
-document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+/* Small live queue animation */
 
-const counters=document.querySelectorAll("[data-count]");
-let counterStarted=false;
-
-const counterObserver=new IntersectionObserver(entries=>{
-    if(entries[0].isIntersecting && !counterStarted){
-        counterStarted=true;
-        counters.forEach(el=>{
-            const target=+el.dataset.count;
-            let current=0;
-            const step=Math.max(1,Math.ceil(target/50));
-
-            const timer=setInterval(()=>{
-                current+=step;
-                if(current>=target){
-                    current=target;
-                    clearInterval(timer);
-                }
-
-                let suffix=el.textContent.includes("%")?"%":"+";
-                el.textContent=current.toLocaleString()+suffix;
-            },25);
-        });
-    }
-});
-
-counterObserver.observe(document.querySelector(".stats"));
+let queue = 18;
 
 setInterval(()=>{
-    const q=document.getElementById("queueNo");
-    let n=parseInt(q.textContent);
-    if(n>5) q.textContent=n-1;
+
+    if(queue > 5){
+
+        queue--;
+
+        document.getElementById("queueNumber")
+        .textContent = queue;
+
+    }
+
 },7000);
+
 </script>
 
 </body>
 </html>
+```
