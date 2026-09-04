@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KisanQueue — Smart Farmer Procurement</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#f7faf7;color:#13251a;overflow-x:hidden
+}
+:root{
+    --green:#168447;
+    --dark:#092b19;
+    --lime:#a7df68;
+    --soft:#eaf7ed;
+    --yellow:#ffd65a;
+    --muted:#65746a;
+    --white:#fff;
+}
+.container{width:min(1180px,92%);margin:auto}
+header{
+    position:fixed;top:0;left:0;width:100%;z-index:1000;
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid #e7eee8;
+}
+.nav{
+    height:76px;display:flex;align-items:center;justify-content:space-between
+}
+.logo{
+    display:flex;align-items:center;gap:10px;font-size:21px;font-weight:800;
+    color:var(--dark)
+}
+.logo-icon{
+    width:42px;height:42px;border-radius:13px;background:var(--green);
+    display:grid;place-items:center;color:white;font-size:23px;
+    box-shadow:0 10px 25px #16844735
+}
+nav{display:flex;gap:30px}
+nav a{text-decoration:none;color:#4b5a50;font-size:14px;font-weight:600}
+nav a:hover{color:var(--green)}
+.nav-btn{
+    text-decoration:none;background:var(--dark);color:white;padding:12px 20px;
+    border-radius:12px;font-weight:700;font-size:14px
+}
+
+.hero{
+    min-height:760px;padding-top:145px;
+    background:
+      radial-gradient(circle at 85% 25%,#dff7c9 0,transparent 25%),
+      radial-gradient(circle at 10% 60%,#e2f5e8 0,transparent 25%);
+    position:relative
+}
+.hero-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center
+}
+.badge{
+    display:inline-flex;align-items:center;gap:8px;background:#e9f7ed;
+    color:var(--green);padding:9px 14px;border-radius:30px;
+    font-size:13px;font-weight:800;margin-bottom:20px;
+    animation:pulse 2.5s infinite
+}
+.dot{width:8px;height:8px;background:#22c55e;border-radius:50%;box-shadow:0 0 0 6px #22c55e20}
+h1{
+    font-size:clamp(44px,6vw,72px);line-height:1.02;letter-spacing:-3px;
+    color:var(--dark);max-width:650px
+}
+h1 span{color:var(--green)}
+.hero-text{
+    font-size:18px;line-height:1.8;color:var(--muted);
+    max-width:590px;margin:25px 0 30px
+}
+.actions{display:flex;gap:14px;flex-wrap:wrap}
+.btn{
+    border:0;text-decoration:none;padding:15px 23px;border-radius:13px;
+    font-weight:800;cursor:pointer;transition:.3s;display:inline-flex;align-items:center;gap:8px
+}
+.btn-primary{background:var(--green);color:white;box-shadow:0 12px 30px #16844730}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 35px #16844740}
+.btn-light{background:white;color:var(--dark);border:1px solid #dce7de}
+.btn-light:hover{transform:translateY(-3px)}
+
+.dashboard-preview{
+    background:#092b19;border-radius:28px;padding:22px;
+    box-shadow:0 30px 80px #092b1935;
+    transform:rotate(1.5deg);animation:float 5s ease-in-out infinite
+}
+.preview-top{display:flex;justify-content:space-between;align-items:center;color:white;margin-bottom:20px}
+.preview-title{font-weight:800}
+.live{font-size:11px;background:#1d9d55;padding:7px 10px;border-radius:20px}
+.queue-card{
+    background:linear-gradient(135deg,#164a2c,#0e3820);
+    border:1px solid #ffffff14;border-radius:20px;padding:24px;color:white
+}
+.queue-label{color:#a8c1af;font-size:13px}
+.queue-number{font-size:70px;font-weight:900;margin:7px 0}
+.queue-meta{display:flex;justify-content:space-between;color:#a8c1af;font-size:13px}
+.progress{height:8px;background:#ffffff14;border-radius:20px;margin-top:20px;overflow:hidden}
+.progress i{display:block;height:100%;width:72%;background:var(--lime);border-radius:20px;animation:progress 2s ease}
+.preview-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.mini{
+    padding:17px;background:#ffffff0d;border:1px solid #ffffff12;
+    border-radius:17px;color:white
+}
+.mini small{color:#91aa99}.mini strong{display:block;font-size:20px;margin-top:5px}
+
+.stats{
+    background:white;border-top:1px solid #edf1ed;border-bottom:1px solid #edf1ed;
+    padding:28px 0
+}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.stat{text-align:center;border-right:1px solid #e5ebe6}
+.stat:last-child{border:0}
+.stat strong{font-size:30px;color:var(--dark)}
+.stat span{display:block;color:#78857c;font-size:13px;margin-top:5px}
+
+.section{padding:105px 0}
+.section-head{text-align:center;max-width:680px;margin:0 auto 55px}
+.eyebrow{
+    color:var(--green);font-size:12px;font-weight:900;letter-spacing:1.5px;
+    text-transform:uppercase;margin-bottom:12px
+}
+.section h2{font-size:42px;letter-spacing:-1.5px;color:var(--dark)}
+.section-head p{color:var(--muted);line-height:1.7;margin-top:15px}
+
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.problem{
+    background:white;border:1px solid #e5ece6;border-radius:22px;padding:28px;
+    transition:.35s
+}
+.problem:hover{transform:translateY(-8px);box-shadow:0 20px 50px #153b2012}
+.problem-icon{font-size:34px;margin-bottom:20px}
+.problem h3{margin-bottom:10px;color:var(--dark)}
+.problem p{color:var(--muted);line-height:1.7;font-size:14px}
+
+.feature-section{background:#092b19;color:white}
+.feature-section .section-head p{color:#a9baae}
+.feature-section h2{color:white}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.feature{
+    padding:26px;border:1px solid #ffffff12;background:#ffffff08;
+    border-radius:22px;transition:.35s
+}
+.feature:hover{background:#ffffff12;transform:translateY(-7px)}
+.feature-icon{font-size:32px;margin-bottom:20px}
+.feature h3{margin-bottom:10px}
+.feature p{color:#9fb3a5;font-size:14px;line-height:1.7}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.step{position:relative;padding:25px}
+.step-num{
+    width:46px;height:46px;border-radius:50%;background:var(--green);
+    color:white;display:grid;place-items:center;font-weight:900;margin-bottom:18px
+}
+.step h3{margin-bottom:9px}.step p{font-size:14px;color:var(--muted);line-height:1.7}
+
+.live-section{background:#eef8ef}
+.centres{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.centre{
+    background:white;border-radius:22px;padding:24px;border:1px solid #dfebe1
+}
+.centre-head{display:flex;justify-content:space-between;margin-bottom:18px}
+.status{color:#168447;background:#e9f7ed;padding:6px 9px;border-radius:20px;font-size:11px;font-weight:800}
+.centre h3{color:var(--dark)}
+.centre p{color:var(--muted);font-size:13px;margin-top:6px}
+.centre-row{display:flex;justify-content:space-between;margin-top:20px;font-size:13px}
+.centre-row strong{color:var(--dark)}
+.centre-progress{height:7px;background:#edf2ee;border-radius:20px;margin-top:9px;overflow:hidden}
+.centre-progress i{display:block;width:65%;height:100%;background:var(--green);border-radius:20px}
+
+.cta{
+    padding:80px 0;background:linear-gradient(135deg,#a9e36e,#d8f5b8)
+}
+.cta-box{text-align:center}.cta h2{font-size:45px;color:var(--dark);margin-bottom:14px}
+.cta p{color:#42604a;margin-bottom:25px}
+
+footer{background:#061c10;color:white;padding:65px 0 25px}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
+footer p,footer a{color:#91a69a;font-size:14px;line-height:1.8;text-decoration:none}
+footer h4{margin-bottom:16px}
+.footer-logo{margin-bottom:15px}
+.copy{border-top:1px solid #ffffff12;margin-top:45px;padding-top:20px;color:#71877a;font-size:12px}
+
+.reveal{opacity:0;transform:translateY(30px);transition:.8s}
+.reveal.show{opacity:1;transform:none}
+
+@keyframes float{50%{transform:rotate(-1deg) translateY(-12px)}}
+@keyframes pulse{50%{transform:scale(1.03)}}
+@keyframes progress{from{width:0}to{width:72%}}
+
+@media(max-width:850px){
+    nav{display:none}
+    .hero-grid{grid-template-columns:1fr}
+    .hero{padding-top:120px}
+    .dashboard-preview{margin-top:20px}
+    .stat-grid{grid-template-columns:1fr 1fr}
+    .stat:nth-child(2){border:0}
+    .problem-grid,.features,.steps,.centres{grid-template-columns:1fr 1fr}
+    .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:550px){
+    h1{font-size:45px}
+    .section h2,.cta h2{font-size:34px}
+    .problem-grid,.features,.steps,.centres,.footer-grid{grid-template-columns:1fr}
+    .stat-grid{grid-template-columns:1fr 1fr}
+    .stat{border:0}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container nav">
+    <div class="logo">
+        <div class="logo-icon">🌾</div>
+        KisanQueue
+    </div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it Works</a>
+        <a href="#centres">Centres</a>
+    </nav>
+
+    <a href="dashboard.html" class="nav-btn">Farmer Dashboard →</a>
+</div>
+</header>
+
+<main id="home">
+
+<section class="hero">
+<div class="container hero-grid">
+
+<div>
+    <div class="badge"><span class="dot"></span> Smart Procurement Platform</div>
+
+    <h1>Less Waiting.<br><span>More Farming.</span></h1>
+
+    <p class="hero-text">
+        KisanQueue helps farmers book procurement slots, track their live queue,
+        receive important notifications and monitor procurement & payment status —
+        all from one simple platform.
+    </p>
+
+    <div class="actions">
+        <a href="dashboard.html" class="btn btn-primary">🚜 Book a Slot</a>
+        <a href="#features" class="btn btn-light">Explore Platform ↓</a>
+    </div>
+</div>
+
+<div class="dashboard-preview">
+    <div class="preview-top">
+        <div class="preview-title">Today's Procurement</div>
+        <div class="live">● LIVE</div>
+    </div>
+
+    <div class="queue-card">
+        <div class="queue-label">Your Queue Position</div>
+        <div class="queue-number" id="queueNo">18</div>
+
+        <div class="queue-meta">
+            <span>👨‍🌾 17 farmers ahead</span>
+            <span>≈ 42 min</span>
+        </div>
+
+        <div class="progress"><i></i></div>
+    </div>
+
+    <div class="preview-stats">
+        <div class="mini">
+            <small>Today's Slot</small>
+            <strong>10:30 AM</strong>
+        </div>
+        <div class="mini">
+            <small>Centre Status</small>
+            <strong>Open ✓</strong>
+        </div>
+    </div>
+</div>
+
+</div>
+</section>
+
+<section class="stats">
+<div class="container stat-grid">
+    <div class="stat"><strong data-count="12000">0+</strong><span>Farmers Served</span></div>
+    <div class="stat"><strong data-count="48">0+</strong><span>Procurement Centres</span></div>
+    <div class="stat"><strong data-count="37">0%</strong><span>Less Waiting Time</span></div>
+    <div class="stat"><strong data-count="98">0%</strong><span>Payment Tracking</span></div>
+</div>
+</section>
+
+<section class="section reveal">
+<div class="container">
+<div class="section-head">
+    <div class="eyebrow">The Problem</div>
+    <h2>Farmers deserve a better procurement experience.</h2>
+    <p>
+        Long queues, uncertain schedules and limited status information
+        waste valuable time during the harvest season.
+    </p>
+</div>
+
+<div class="problem-grid">
+    <div class="problem">
+        <div class="problem-icon">⏳</div>
+        <h3>Long Waiting</h3>
+        <p>Farmers often spend hours at procurement centres waiting for their turn.</p>
+    </div>
+    <div class="problem">
+        <div class="problem-icon">❓</div>
+        <h3>No Real-Time Information</h3>
+        <p>Farmers don't know how many people are ahead or when their turn will arrive.</p>
+    </div>
+    <div class="problem">
+        <div class="problem-icon">💰</div>
+        <h3>Payment Uncertainty</h3>
+        <p>After procurement, tracking payment status can be difficult and confusing.</p>
+    </div>
+</div>
+</div>
+</section>
+
+<section class="section feature-section reveal" id="features">
+<div class="container">
+<div class="section-head">
+    <div class="eyebrow">Smart Solution</div>
+    <h2>Everything a farmer needs.</h2>
+    <p>One platform connecting farmers with procurement centres.</p>
+</div>
+
+<div class="features">
+    <div class="feature"><div class="feature-icon">📅</div><h3>Slot Booking</h3><p>Choose your preferred procurement date and time slot before visiting the centre.</p></div>
+    <div class="feature"><div class="feature-icon">📍</div><h3>Live Queue</h3><p>See your live position and estimated waiting time in real time.</p></div>
+    <div class="feature"><div class="feature-icon">🔔</div><h3>Smart Alerts</h3><p>Get reminders and important procurement updates instantly.</p></div>
+    <div class="feature"><div class="feature-icon">💳</div><h3>Payment Tracking</h3><p>Track procurement completion and payment status from your dashboard.</p></div>
+</div>
+</div>
+</section>
+
+<section class="section reveal" id="how">
+<div class="container">
+<div class="section-head">
+    <div class="eyebrow">Simple Process</div>
+    <h2>From booking to payment.</h2>
+</div>
+
+<div class="steps">
+    <div class="step"><div class="step-num">01</div><h3>Register</h3><p>Create your farmer profile with basic details.</p></div>
+    <div class="step"><div class="step-num">02</div><h3>Book Slot</h3><p>Select your crop, centre and convenient time slot.</p></div>
+    <div class="step"><div class="step-num">03</div><h3>Track Queue</h3><p>Arrive at the centre and monitor your position live.</p></div>
+    <div class="step"><div class="step-num">04</div><h3>Get Paid</h3><p>Track procurement completion and payment status.</p></div>
+</div>
+</div>
+</section>
+
+<section class="section live-section reveal" id="centres">
+<div class="container">
+<div class="section-head">
+    <div class="eyebrow">Live Network</div>
+    <h2>Procurement centres at a glance.</h2>
+</div>
+
+<div class="centres">
+    <div class="centre">
+        <div class="centre-head"><div><h3>Krishi Seva Centre</h3><p>Nashik District</p></div><span class="status">OPEN</span></div>
+        <div class="centre-row"><span>Queue</span><strong>18 farmers</strong></div>
+        <div class="centre-progress"><i></i></div>
+        <div class="centre-row"><span>Avg. Wait</span><strong>42 min</strong></div>
+    </div>
+
+    <div class="centre">
+        <div class="centre-head"><div><h3>Agri Procurement Hub</h3><p>Pune District</p></div><span class="status">OPEN</span></div>
+        <div class="centre-row"><span>Queue</span><strong>11 farmers</strong></div>
+        <div class="centre-progress"><i style="width:42%"></i></div>
+        <div class="centre-row"><span>Avg. Wait</span><strong>25 min</strong></div>
+    </div>
+
+    <div class="centre">
+        <div class="centre-head"><div><h3>Kisan Suvidha Centre</h3><p>Ahmednagar</p></div><span class="status">OPEN</span></div>
+        <div class="centre-row"><span>Queue</span><strong>24 farmers</strong></div>
+        <div class="centre-progress"><i style="width:78%"></i></div>
+        <div class="centre-row"><span>Avg. Wait</span><strong>55 min</strong></div>
+    </div>
+</div>
+</div>
+</section>
+
+<section class="cta">
+<div class="container cta-box">
+    <h2>Stop waiting. Start planning.</h2>
+    <p>Book your procurement slot and reach the centre at the right time.</p>
+    <a href="dashboard.html" class="btn btn-primary">🚜 Open Farmer Dashboard</a>
+</div>
+</section>
+
+</main>
+
+<footer>
+<div class="container">
+<div class="footer-grid">
+    <div>
+        <div class="logo footer-logo"><div class="logo-icon">🌾</div>KisanQueue</div>
+        <p>A smart digital platform designed to make farmer procurement faster, simpler and more transparent.</p>
+    </div>
+
+    <div>
+        <h4>Platform</h4>
+        <p><a href="#features">Features</a></p>
+        <p><a href="#how">How it Works</a></p>
+        <p><a href="#centres">Procurement Centres</a></p>
+    </div>
+
+    <div>
+        <h4>For Farmers</h4>
+        <p><a href="dashboard.html">Dashboard</a></p>
+        <p><a href="dashboard.html">Book a Slot</a></p>
+        <p><a href="dashboard.html">Track Queue</a></p>
+    </div>
+
+    <div>
+        <h4>Support</h4>
+        <p>📞 1800-KISAN</p>
+        <p>✉️ support@kisanqueue.demo</p>
+        <p>Mon–Sat · 9 AM–6 PM</p>
+    </div>
+</div>
+
+<div class="copy">© 2026 KisanQueue · Smart Procurement Platform · Frontend Demo</div>
+</div>
+</footer>
+
+<script>
+const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+        if(e.isIntersecting)e.target.classList.add("show");
+    });
+},{threshold:.12});
+
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+const counters=document.querySelectorAll("[data-count]");
+let counterStarted=false;
+
+const counterObserver=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting && !counterStarted){
+        counterStarted=true;
+        counters.forEach(el=>{
+            const target=+el.dataset.count;
+            let current=0;
+            const step=Math.max(1,Math.ceil(target/50));
+
+            const timer=setInterval(()=>{
+                current+=step;
+                if(current>=target){
+                    current=target;
+                    clearInterval(timer);
+                }
+
+                let suffix=el.textContent.includes("%")?"%":"+";
+                el.textContent=current.toLocaleString()+suffix;
+            },25);
+        });
+    }
+});
+
+counterObserver.observe(document.querySelector(".stats"));
+
+setInterval(()=>{
+    const q=document.getElementById("queueNo");
+    let n=parseInt(q.textContent);
+    if(n>5) q.textContent=n-1;
+},7000);
+</script>
+
+</body>
+</html>
