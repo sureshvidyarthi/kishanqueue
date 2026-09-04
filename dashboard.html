@@ -1,645 +1,3010 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>KisanQueue — Farmer Dashboard</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:#f5f8f5;color:#14231a
+    background:#f5f8f5;
+    color:#14231a;
+    overflow-x:hidden;
 }
+
 :root{
     --green:#168447;
     --dark:#092b19;
     --lime:#a7df68;
     --soft:#e9f7ed;
-    --yellow:#ffd65a;
     --muted:#6c7a71;
     --border:#e2ebe4;
     --white:#fff;
 }
-.app{display:flex;min-height:100vh}
+
+.icon{
+    width:20px;
+    height:20px;
+    stroke:currentColor;
+    stroke-width:1.9;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.icon-sm{
+    width:17px;
+    height:17px;
+}
+
+/* ================= APP ================= */
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
 .sidebar{
-    width:245px;background:var(--dark);color:white;padding:25px 17px;
-    position:fixed;left:0;top:0;height:100vh;z-index:50
+    width:245px;
+    background:var(--dark);
+    color:white;
+    padding:25px 17px;
+    position:fixed;
+    left:0;
+    top:0;
+    height:100vh;
+    z-index:50;
 }
-.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:900;padding:8px 12px 35px}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:white;
+    font-size:20px;
+    font-weight:900;
+    padding:8px 12px 35px;
+}
+
 .logo-icon{
-    width:40px;height:40px;border-radius:12px;background:var(--green);
-    display:grid;place-items:center
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    background:var(--green);
+    display:grid;
+    place-items:center;
 }
+
 .menu-label{
-    color:#718879;font-size:10px;text-transform:uppercase;
-    letter-spacing:1.5px;padding:0 12px;margin:18px 0 9px
+    color:#718879;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    padding:0 12px;
+    margin:18px 0 9px;
 }
+
 .menu a{
-    display:flex;align-items:center;gap:12px;text-decoration:none;color:#9db0a2;
-    padding:13px 12px;border-radius:12px;margin-bottom:4px;font-size:14px;font-weight:600
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:#9db0a2;
+    padding:13px 12px;
+    border-radius:12px;
+    margin-bottom:4px;
+    font-size:14px;
+    font-weight:600;
+    transition:.25s;
 }
-.menu a.active,.menu a:hover{background:#ffffff10;color:white}
+
+.menu a:hover,
+.menu a.active{
+    background:#ffffff10;
+    color:white;
+}
+
 .profile{
-    position:absolute;bottom:20px;left:17px;right:17px;padding:14px;
-    border:1px solid #ffffff12;border-radius:15px;background:#ffffff08;
-    display:flex;gap:10px;align-items:center
+    position:absolute;
+    bottom:20px;
+    left:17px;
+    right:17px;
+    padding:14px;
+    border:1px solid #ffffff12;
+    border-radius:15px;
+    background:#ffffff08;
+    display:flex;
+    gap:10px;
+    align-items:center;
 }
-.avatar{width:38px;height:38px;border-radius:50%;background:var(--lime);display:grid;place-items:center;font-weight:900;color:var(--dark)}
-.profile small{color:#8da193}.profile strong{display:block;font-size:13px}
 
-.main{margin-left:245px;width:calc(100% - 245px)}
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:var(--lime);
+    display:grid;
+    place-items:center;
+    font-weight:900;
+    color:var(--dark);
+    flex-shrink:0;
+}
+
+.profile small{
+    color:#8da193;
+    display:block;
+    font-size:9px;
+}
+
+.profile strong{
+    display:block;
+    font-size:13px;
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    margin-left:245px;
+    width:calc(100% - 245px);
+}
+
 .topbar{
-    height:75px;background:white;border-bottom:1px solid var(--border);
-    display:flex;align-items:center;justify-content:space-between;padding:0 35px
+    height:75px;
+    background:white;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 35px;
 }
-.top-title{font-size:14px;color:var(--muted)}
-.top-title strong{color:var(--dark)}
-.top-actions{display:flex;gap:12px;align-items:center}
+
+.top-title{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.top-title strong{
+    color:var(--dark);
+}
+
+.top-actions{
+    display:flex;
+    gap:10px;
+}
+
 .icon-btn{
-    width:40px;height:40px;border-radius:12px;border:1px solid var(--border);
-    background:white;cursor:pointer;position:relative
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:white;
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    position:relative;
 }
+
 .notify-dot{
-    position:absolute;width:8px;height:8px;background:#ef4444;border-radius:50%;
-    right:8px;top:7px;border:2px solid white
+    position:absolute;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#ef4444;
+    top:8px;
+    right:8px;
+    border:2px solid white;
 }
 
-.content{padding:32px}
+.content{
+    padding:32px;
+}
+
+/* ================= WELCOME ================= */
+
 .welcome{
-    display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:27px
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    margin-bottom:27px;
 }
-.welcome h1{font-size:31px;color:var(--dark);letter-spacing:-1px}
-.welcome p{color:var(--muted);margin-top:6px;font-size:14px}
-.date-pill{background:white;border:1px solid var(--border);padding:11px 15px;border-radius:12px;font-size:13px}
 
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
+.welcome h1{
+    color:var(--dark);
+    font-size:31px;
+    letter-spacing:-1px;
+}
+
+.welcome p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:6px;
+}
+
+.date-pill{
+    padding:11px 15px;
+    border:1px solid var(--border);
+    background:white;
+    border-radius:12px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* ================= KPI ================= */
+
+.kpis{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
 .kpi{
-    background:white;border:1px solid var(--border);border-radius:19px;padding:20px;
-    transition:.3s;position:relative;overflow:hidden
+    background:white;
+    border:1px solid var(--border);
+    border-radius:19px;
+    padding:20px;
+    position:relative;
+    overflow:hidden;
+    transition:.3s;
 }
-.kpi:hover{transform:translateY(-4px);box-shadow:0 15px 35px #16351e0c}
-.kpi-icon{font-size:24px;margin-bottom:14px}
-.kpi small{color:var(--muted);font-size:12px}
-.kpi strong{display:block;font-size:28px;color:var(--dark);margin:4px 0}
-.green{color:var(--green)!important}.yellow{color:#b68100!important}
-.kpi::after{
-    content:"";position:absolute;width:60px;height:60px;border-radius:50%;
-    background:#1684470a;right:-15px;bottom:-20px
+
+.kpi:hover{
+    transform:translateY(-4px);
+    box-shadow:0 15px 35px #16351e0c;
 }
+
+.kpi-icon{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    color:var(--green);
+    background:var(--soft);
+    margin-bottom:13px;
+}
+
+.kpi small{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.kpi strong{
+    display:block;
+    color:var(--dark);
+    font-size:26px;
+    margin:5px 0;
+}
+
+.green{
+    color:var(--green)!important;
+}
+
+/* ================= GRID ================= */
 
 .grid{
-    display:grid;grid-template-columns:1.35fr .8fr;gap:20px
+    display:grid;
+    grid-template-columns:1.35fr .8fr;
+    gap:20px;
 }
+
 .card{
-    background:white;border:1px solid var(--border);border-radius:21px;
-    padding:23px;margin-bottom:20px
+    background:white;
+    border:1px solid var(--border);
+    border-radius:21px;
+    padding:23px;
+    margin-bottom:20px;
+    scroll-margin-top:90px;
 }
-.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-.card-head h2{font-size:17px;color:var(--dark)}
-.card-head span{font-size:12px;color:var(--muted)}
+
+.card-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.card-head h2{
+    color:var(--dark);
+    font-size:17px;
+}
+
+.card-head span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* ================= QUEUE ================= */
 
 .queue-main{
-    display:grid;grid-template-columns:180px 1fr;gap:28px;align-items:center
+    display:grid;
+    grid-template-columns:180px 1fr;
+    gap:28px;
+    align-items:center;
 }
+
 .ring{
-    width:170px;height:170px;border-radius:50%;
+    width:170px;
+    height:170px;
+    margin:auto;
+    border-radius:50%;
     background:conic-gradient(var(--green) 72%,#e7eee8 0);
-    display:grid;place-items:center;margin:auto;position:relative
+    display:grid;
+    place-items:center;
+    position:relative;
 }
+
 .ring::before{
-    content:"";position:absolute;width:130px;height:130px;background:white;border-radius:50%
+    content:"";
+    position:absolute;
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background:white;
 }
-.ring-content{position:relative;text-align:center}
-.ring-content strong{font-size:46px;color:var(--dark);display:block;line-height:1}
-.ring-content small{color:var(--muted);font-size:11px}
 
-.queue-info h3{font-size:18px;margin-bottom:7px}
-.queue-info p{color:var(--muted);font-size:13px}
-.big-time{font-size:31px;font-weight:900;color:var(--green);margin:12px 0}
-.queue-bar{height:9px;background:#eaf0eb;border-radius:20px;overflow:hidden}
-.queue-bar i{display:block;width:72%;height:100%;background:var(--green);border-radius:20px;transition:width 1s}
+.ring-content{
+    position:relative;
+    text-align:center;
+}
 
-.queue-details{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
-.detail{background:#f6f9f6;padding:13px;border-radius:13px}
-.detail small{display:block;color:var(--muted);font-size:10px}
-.detail strong{display:block;margin-top:4px;color:var(--dark);font-size:13px}
+.ring-content strong{
+    display:block;
+    color:var(--dark);
+    font-size:46px;
+    line-height:1;
+}
 
-.slot-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field label{display:block;font-size:11px;font-weight:800;color:#56645b;margin-bottom:7px}
-.field select,.field input{
-    width:100%;padding:12px;border:1px solid var(--border);border-radius:11px;
-    outline:none;background:#fbfdfb;color:var(--dark)
+.ring-content small{
+    color:var(--muted);
+    font-size:10px;
 }
-.slot-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:5px}
-.slot{
-    border:1px solid var(--border);background:white;padding:10px 5px;
-    border-radius:10px;font-size:11px;cursor:pointer;font-weight:700
-}
-.slot:hover,.slot.selected{background:var(--green);color:white;border-color:var(--green)}
-.slot.disabled{opacity:.4;cursor:not-allowed}
-.confirm{
-    width:100%;border:0;background:var(--dark);color:white;padding:14px;
-    border-radius:12px;margin-top:16px;font-weight:800;cursor:pointer;
-    transition:.3s
-}
-.confirm:hover{background:var(--green);transform:translateY(-2px)}
 
-.notification{
-    display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #edf1ed
+.queue-info h3{
+    font-size:18px;
+    color:var(--dark);
 }
-.notification:last-child{border:0}
-.n-icon{
-    min-width:36px;height:36px;border-radius:11px;background:var(--soft);
-    display:grid;place-items:center
-}
-.notification strong{font-size:13px;display:block}
-.notification p{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
-.unread{position:relative}
-.unread::after{content:"";width:7px;height:7px;background:#ef4444;border-radius:50%;position:absolute;right:0;top:7px}
 
-.timeline{position:relative;padding-left:25px}
-.timeline::before{
-    content:"";position:absolute;left:7px;top:5px;bottom:5px;width:2px;background:#dfe9e1
+.queue-info p{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:5px;
 }
-.event{position:relative;padding:0 0 22px}
-.event::before{
-    content:"";position:absolute;left:-24px;top:2px;width:12px;height:12px;
-    border-radius:50%;background:white;border:3px solid #ccd9cf
-}
-.event.done::before{background:var(--green);border-color:var(--green)}
-.event.active::before{background:var(--lime);border-color:var(--green);box-shadow:0 0 0 6px #a7df6825}
-.event strong{font-size:13px}
-.event p{font-size:11px;color:var(--muted);margin-top:4px}
 
-.payment{
-    background:linear-gradient(135deg,#092b19,#12462a);color:white;
-    overflow:hidden;position:relative
+.big-time{
+    color:var(--green);
+    font-size:31px;
+    font-weight:900;
+    margin:13px 0;
 }
-.payment h2{color:white}
-.payment-label{font-size:11px;color:#9bb2a2}
-.amount{font-size:35px;font-weight:900;margin:8px 0 20px}
-.payment-row{display:flex;justify-content:space-between;font-size:12px;color:#a6baac;margin:9px 0}
-.payment-row strong{color:white}
-.pay-progress{height:8px;background:#ffffff16;border-radius:20px;overflow:hidden;margin-top:14px}
-.pay-progress i{display:block;width:78%;height:100%;background:var(--lime)}
+
+.queue-bar{
+    height:8px;
+    background:#e8eee9;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.queue-bar i{
+    display:block;
+    width:72%;
+    height:100%;
+    background:var(--green);
+    border-radius:20px;
+    transition:width .7s;
+}
+
+.queue-details{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin-top:18px;
+}
+
+.detail{
+    padding:12px;
+    border-radius:12px;
+    background:#f6f9f6;
+}
+
+.detail small{
+    color:var(--muted);
+    font-size:9px;
+    display:block;
+}
+
+.detail strong{
+    color:var(--dark);
+    font-size:12px;
+    display:block;
+    margin-top:4px;
+}
 
 .checkin{
-    background:#eaf7ed;border:1px solid #d5ebda;padding:15px;border-radius:14px;
-    display:flex;align-items:center;justify-content:space-between;margin-top:18px
+    margin-top:18px;
+    padding:14px;
+    border-radius:14px;
+    background:var(--soft);
+    border:1px solid #d5ebda;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 }
-.checkin strong{font-size:13px}.checkin span{font-size:11px;color:var(--green)}
+
+.checkin strong{
+    display:block;
+    font-size:12px;
+}
+
+.checkin span{
+    color:var(--green);
+    font-size:10px;
+}
+
+/* ================= BOOKING ================= */
+
+.slot-form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.field label{
+    display:block;
+    color:#56645b;
+    font-size:10px;
+    font-weight:800;
+    margin-bottom:7px;
+}
+
+.field select,
+.field input{
+    width:100%;
+    padding:12px;
+    border:1px solid var(--border);
+    background:#fbfdfb;
+    border-radius:11px;
+    color:var(--dark);
+    outline:none;
+}
+
+.slot-buttons{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:8px;
+}
+
+.slot{
+    padding:10px 5px;
+    border:1px solid var(--border);
+    background:white;
+    border-radius:10px;
+    cursor:pointer;
+    color:#435148;
+    font-size:10px;
+    font-weight:800;
+    transition:.25s;
+}
+
+.slot:hover,
+.slot.selected{
+    background:var(--green);
+    border-color:var(--green);
+    color:white;
+}
+
+.slot.disabled{
+    opacity:.35;
+    cursor:not-allowed;
+}
+
+.confirm{
+    width:100%;
+    border:0;
+    padding:14px;
+    background:var(--dark);
+    color:white;
+    border-radius:12px;
+    margin-top:16px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.confirm:hover{
+    background:var(--green);
+}
+
+/* ================= TIMELINE ================= */
+
+.timeline{
+    position:relative;
+    padding-left:25px;
+}
+
+.timeline::before{
+    content:"";
+    position:absolute;
+    left:7px;
+    top:5px;
+    bottom:5px;
+    width:2px;
+    background:#dfe9e1;
+}
+
+.event{
+    position:relative;
+    padding-bottom:22px;
+}
+
+.event::before{
+    content:"";
+    position:absolute;
+    left:-24px;
+    top:2px;
+    width:11px;
+    height:11px;
+    border-radius:50%;
+    background:white;
+    border:3px solid #ccd9cf;
+}
+
+.event.done::before{
+    background:var(--green);
+    border-color:var(--green);
+}
+
+.event.active::before{
+    background:var(--lime);
+    border-color:var(--green);
+    box-shadow:0 0 0 6px #a7df6825;
+}
+
+.event strong{
+    font-size:12px;
+}
+
+.event p{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:4px;
+}
+
+/* ================= NOTIFICATIONS ================= */
+
+.notification{
+    display:flex;
+    gap:11px;
+    padding:13px 0;
+    border-bottom:1px solid #edf1ed;
+}
+
+.notification:last-child{
+    border-bottom:0;
+}
+
+.n-icon{
+    min-width:36px;
+    height:36px;
+    border-radius:11px;
+    background:var(--soft);
+    color:var(--green);
+    display:grid;
+    place-items:center;
+}
+
+.notification strong{
+    display:block;
+    font-size:12px;
+}
+
+.notification p{
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.5;
+    margin-top:3px;
+}
+
+/* ================= PAYMENT ================= */
+
+.payment{
+    background:linear-gradient(135deg,#092b19,#12462a);
+    color:white;
+}
+
+.payment h2{
+    color:white;
+}
+
+.payment-label{
+    color:#9bb2a2;
+    font-size:10px;
+}
+
+.amount{
+    font-size:35px;
+    font-weight:900;
+    margin:8px 0 20px;
+}
+
+.payment-row{
+    display:flex;
+    justify-content:space-between;
+    color:#a6baac;
+    font-size:11px;
+    margin:9px 0;
+}
+
+.payment-row strong{
+    color:white;
+}
+
+.pay-progress{
+    height:8px;
+    background:#ffffff16;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:14px;
+}
+
+.pay-progress i{
+    display:block;
+    width:78%;
+    height:100%;
+    background:var(--lime);
+}
+
+/* ================= BUTTON ================= */
+
+.btn{
+    border:0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    padding:9px 13px;
+    border-radius:10px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.btn-primary{
+    background:var(--green);
+    color:white;
+}
+
+/* ================= TOAST ================= */
 
 .toast{
-    position:fixed;right:25px;bottom:25px;background:var(--dark);color:white;
-    padding:14px 18px;border-radius:13px;box-shadow:0 20px 50px #0003;
-    transform:translateY(100px);opacity:0;transition:.4s;z-index:9999;
-    font-size:13px
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    padding:14px 18px;
+    border-radius:13px;
+    background:var(--dark);
+    color:white;
+    font-size:12px;
+    z-index:99999;
+    transform:translateY(100px);
+    opacity:0;
+    transition:.4s;
 }
-.toast.show{transform:none;opacity:1}
+
+.toast.show{
+    transform:none;
+    opacity:1;
+}
+
+/* ================= MODAL ================= */
 
 .modal{
-    position:fixed;inset:0;background:#061c1088;backdrop-filter:blur(8px);
-    display:none;place-items:center;z-index:1000;padding:20px
+    position:fixed;
+    inset:0;
+    display:none;
+    place-items:center;
+    padding:20px;
+    background:#061c1088;
+    backdrop-filter:blur(8px);
+    z-index:9998;
 }
-.modal.show{display:grid}
-.modal-box{
-    background:white;border-radius:23px;padding:30px;max-width:430px;width:100%;
-    text-align:center;animation:pop .35s ease
-}
-.modal-icon{font-size:48px;margin-bottom:12px}
-.modal h2{color:var(--dark)}
-.modal p{color:var(--muted);font-size:13px;line-height:1.7;margin:10px 0 20px}
-.modal button{border:0;background:var(--green);color:white;padding:13px 25px;border-radius:11px;font-weight:800;cursor:pointer}
 
-@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.modal.show{
+    display:grid;
+}
+
+.modal-box{
+    width:100%;
+    max-width:420px;
+    background:white;
+    border-radius:22px;
+    padding:30px;
+    text-align:center;
+    animation:pop .35s ease;
+}
+
+.modal-icon{
+    width:60px;
+    height:60px;
+    border-radius:18px;
+    background:var(--soft);
+    color:var(--green);
+    display:grid;
+    place-items:center;
+    margin:0 auto 15px;
+}
+
+.modal h2{
+    color:var(--dark);
+}
+
+.modal p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.7;
+    margin:10px 0 20px;
+}
+
+.modal button{
+    border:0;
+    background:var(--green);
+    color:white;
+    padding:12px 25px;
+    border-radius:11px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+@keyframes pop{
+    from{
+        opacity:0;
+        transform:scale(.85);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+/* =====================================================
+   MOBILE NAV + DRAWER
+===================================================== */
+
+.mobile-nav,
+.drawer-overlay,
+.more-drawer{
+    display:none;
+}
+
+/* ================= TABLET ================= */
 
 @media(max-width:1050px){
-    .kpis{grid-template-columns:1fr 1fr}
-    .grid{grid-template-columns:1fr}
+
+    .kpis{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
 }
+
+/* ================= MOBILE ================= */
+
 @media(max-width:750px){
-    .sidebar{width:70px;padding:20px 10px}
-    .logo span,.menu-label,.menu a span,.profile>div:not(.avatar){display:none}
-    .logo{padding-left:5px}
-    .menu a{justify-content:center}
-    .profile{left:10px;right:10px}
-    .main{margin-left:70px;width:calc(100% - 70px)}
-    .topbar{padding:0 18px}
-    .content{padding:20px 15px}
-    .queue-main{grid-template-columns:1fr}
+
+    body{
+        padding-bottom:86px;
+    }
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        width:100%;
+        margin-left:0;
+    }
+
+    .topbar{
+        height:66px;
+        padding:0 14px;
+        position:sticky;
+        top:0;
+        z-index:100;
+    }
+
+    .top-title{
+        font-size:10px;
+    }
+
+    .top-title strong{
+        display:block;
+        font-size:14px;
+        margin-top:2px;
+    }
+
+    .top-actions{
+        gap:6px;
+    }
+
+    .icon-btn{
+        width:37px;
+        height:37px;
+    }
+
+    .content{
+        padding:20px 14px 25px;
+    }
+
+    .welcome{
+        display:block;
+        margin-bottom:20px;
+    }
+
+    .welcome h1{
+        font-size:25px;
+        line-height:1.2;
+    }
+
+    .welcome p{
+        font-size:11px;
+        line-height:1.6;
+    }
+
+    .date-pill{
+        display:inline-flex;
+        margin-top:12px;
+        font-size:10px;
+        padding:9px 11px;
+    }
+
+    /* KPI SCROLLER */
+
+    .kpis{
+        display:flex;
+        overflow-x:auto;
+        scrollbar-width:none;
+        gap:9px;
+        margin:0 -14px 18px;
+        padding:2px 14px 8px;
+    }
+
+    .kpis::-webkit-scrollbar{
+        display:none;
+    }
+
+    .kpi{
+        min-width:155px;
+        flex:0 0 155px;
+        padding:15px;
+        border-radius:17px;
+    }
+
+    .kpi-icon{
+        width:37px;
+        height:37px;
+        margin-bottom:9px;
+    }
+
+    .kpi strong{
+        font-size:22px;
+    }
+
+    .kpi small{
+        font-size:9px;
+    }
+
+    /* GRID */
+
+    .grid{
+        display:block;
+    }
+
+    .card{
+        padding:17px;
+        border-radius:18px;
+        margin-bottom:15px;
+    }
+
+    .card-head{
+        margin-bottom:18px;
+    }
+
+    .card-head h2{
+        font-size:15px;
+    }
+
+    .card-head span{
+        font-size:9px;
+    }
+
+    /* QUEUE */
+
+    .queue-main{
+        display:block;
+    }
+
+    .ring{
+        width:155px;
+        height:155px;
+        margin:5px auto 22px;
+    }
+
+    .ring::before{
+        width:119px;
+        height:119px;
+    }
+
+    .ring-content strong{
+        font-size:40px;
+    }
+
+    .queue-info{
+        text-align:center;
+    }
+
+    .queue-info h3{
+        font-size:16px;
+    }
+
+    .queue-info p{
+        font-size:10px;
+    }
+
+    .big-time{
+        font-size:28px;
+    }
+
+    .queue-details{
+        grid-template-columns:repeat(3,1fr);
+        gap:6px;
+    }
+
+    .detail{
+        padding:10px 5px;
+        text-align:center;
+    }
+
+    .detail small{
+        font-size:8px;
+    }
+
+    .detail strong{
+        font-size:10px;
+    }
+
+    .checkin{
+        padding:11px;
+    }
+
+    /* BOOKING */
+
+    .slot-form{
+        grid-template-columns:1fr;
+    }
+
+    .slot-buttons{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .slot{
+        padding:12px 5px;
+    }
+
+    /* PAYMENT */
+
+    .amount{
+        font-size:31px;
+    }
+
+    /* ================= BOTTOM NAV ================= */
+
+    .mobile-nav{
+
+        position:fixed;
+
+        display:grid;
+
+        grid-template-columns:
+        repeat(5,1fr);
+
+        left:9px;
+        right:9px;
+        bottom:9px;
+
+        height:68px;
+
+        padding:6px;
+
+        background:rgba(9,43,25,.96);
+
+        backdrop-filter:blur(20px);
+
+        border:
+        1px solid rgba(255,255,255,.08);
+
+        border-radius:20px;
+
+        box-shadow:
+        0 18px 55px rgba(0,0,0,.28);
+
+        z-index:9000;
+    }
+
+    .mobile-nav button{
+
+        position:relative;
+
+        border:0;
+
+        background:transparent;
+
+        color:#8fa699;
+
+        border-radius:14px;
+
+        display:flex;
+
+        flex-direction:column;
+
+        align-items:center;
+
+        justify-content:center;
+
+        gap:4px;
+
+        cursor:pointer;
+
+        transition:.25s;
+    }
+
+    .mobile-nav button .icon{
+        width:19px;
+        height:19px;
+    }
+
+    .mobile-nav button span{
+        font-size:8px;
+        font-weight:800;
+    }
+
+    .mobile-nav button.active{
+        color:white;
+        background:#ffffff10;
+    }
+
+    .mobile-nav button.active::before{
+
+        content:"";
+
+        position:absolute;
+
+        top:2px;
+
+        width:23px;
+
+        height:3px;
+
+        border-radius:20px;
+
+        background:var(--lime);
+    }
+
+    .mobile-nav button:active{
+        transform:scale(.88);
+    }
+
+    /* ================= DRAWER ================= */
+
+    .drawer-overlay{
+
+        position:fixed;
+
+        inset:0;
+
+        display:block;
+
+        background:rgba(3,18,10,.48);
+
+        backdrop-filter:blur(5px);
+
+        z-index:9998;
+
+        opacity:0;
+
+        pointer-events:none;
+
+        transition:.3s;
+    }
+
+    .drawer-overlay.show{
+
+        opacity:1;
+
+        pointer-events:auto;
+    }
+
+    .more-drawer{
+
+        position:fixed;
+
+        display:block;
+
+        top:0;
+
+        right:0;
+
+        bottom:0;
+
+        width:min(330px,88vw);
+
+        padding:25px 20px;
+
+        background:white;
+
+        z-index:9999;
+
+        overflow-y:auto;
+
+        transform:translateX(105%);
+
+        transition:
+        transform .4s
+        cubic-bezier(.22,1,.36,1);
+
+        box-shadow:
+        -20px 0 60px rgba(0,0,0,.15);
+    }
+
+    .more-drawer.show{
+        transform:translateX(0);
+    }
+
+    .drawer-header{
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:space-between;
+
+        margin-bottom:25px;
+    }
+
+    .drawer-header h2{
+
+        color:var(--dark);
+
+        font-size:21px;
+    }
+
+    .drawer-close{
+
+        width:40px;
+
+        height:40px;
+
+        border:1px solid var(--border);
+
+        background:#f7faf7;
+
+        border-radius:12px;
+
+        display:grid;
+
+        place-items:center;
+
+        cursor:pointer;
+
+        color:#536258;
+    }
+
+    .drawer-profile{
+
+        display:flex;
+
+        align-items:center;
+
+        gap:12px;
+
+        background:var(--soft);
+
+        border-radius:17px;
+
+        padding:17px;
+
+        margin-bottom:20px;
+    }
+
+    .drawer-profile strong{
+
+        display:block;
+
+        color:var(--dark);
+
+        font-size:13px;
+    }
+
+    .drawer-profile small{
+
+        display:block;
+
+        color:var(--muted);
+
+        font-size:9px;
+
+        margin-top:3px;
+    }
+
+    .drawer-links{
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:6px;
+    }
+
+    .drawer-link{
+
+        width:100%;
+
+        display:flex;
+
+        align-items:center;
+
+        gap:12px;
+
+        padding:13px;
+
+        border:0;
+
+        border-radius:13px;
+
+        background:white;
+
+        color:#425147;
+
+        font-size:13px;
+
+        font-weight:700;
+
+        cursor:pointer;
+
+        text-align:left;
+
+        transition:.25s;
+    }
+
+    .drawer-link:hover{
+
+        background:var(--soft);
+
+        color:var(--green);
+
+        transform:translateX(-3px);
+    }
+
+    .drawer-icon{
+
+        width:38px;
+
+        height:38px;
+
+        border-radius:11px;
+
+        background:#f4f8f4;
+
+        display:grid;
+
+        place-items:center;
+
+        color:var(--green);
+
+        flex-shrink:0;
+    }
+
+    .drawer-divider{
+
+        height:1px;
+
+        background:var(--border);
+
+        margin:15px 0;
+    }
+
+    .drawer-help{
+
+        margin-top:20px;
+
+        background:var(--dark);
+
+        color:white;
+
+        padding:17px;
+
+        border-radius:16px;
+    }
+
+    .drawer-help strong{
+
+        display:block;
+
+        font-size:13px;
+
+        margin-bottom:5px;
+    }
+
+    .drawer-help p{
+
+        color:#9db0a2;
+
+        font-size:10px;
+
+        line-height:1.6;
+    }
+
+    .toast{
+        left:14px;
+        right:14px;
+        bottom:91px;
+        text-align:center;
+    }
+
 }
-@media(max-width:500px){
-    .kpis{grid-template-columns:1fr 1fr}
-    .welcome{display:block}
-    .date-pill{display:inline-block;margin-top:12px}
-    .queue-details{grid-template-columns:1fr}
-    .slot-form{grid-template-columns:1fr}
+
+/* ================= SMALL PHONE ================= */
+
+@media(max-width:390px){
+
+    .content{
+        padding-left:11px;
+        padding-right:11px;
+    }
+
+    .kpis{
+        margin-left:-11px;
+        margin-right:-11px;
+        padding-left:11px;
+        padding-right:11px;
+    }
+
+    .kpi{
+        min-width:145px;
+        flex-basis:145px;
+    }
+
+    .welcome h1{
+        font-size:23px;
+    }
+
+    .mobile-nav{
+        left:6px;
+        right:6px;
+        bottom:6px;
+    }
+
 }
+
 </style>
 </head>
 
 <body>
 
+
+<!-- =====================================================
+     SVG ICON LIBRARY
+===================================================== -->
+
+<svg style="display:none">
+
+<symbol id="home" viewBox="0 0 24 24">
+    <path d="m3 10 9-7 9 7"/>
+    <path d="M5 9v11h14V9"/>
+    <path d="M9 20v-6h6v6"/>
+</symbol>
+
+<symbol id="calendar" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="16" rx="2"/>
+    <path d="M16 3v4M8 3v4M3 10h18"/>
+</symbol>
+
+<symbol id="map-pin" viewBox="0 0 24 24">
+    <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/>
+    <circle cx="12" cy="10" r="2.5"/>
+</symbol>
+
+<symbol id="wallet" viewBox="0 0 24 24">
+    <path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6"/>
+    <path d="M2 6a3 3 0 0 1 3-3h13"/>
+    <path d="M17 13h.01"/>
+</symbol>
+
+<symbol id="leaf" viewBox="0 0 24 24">
+    <path d="M20 4C12 4 5 8 5 16c0 2 1 4 3 4 8 0 12-7 12-16Z"/>
+    <path d="M4 20c3-4 7-7 12-9"/>
+</symbol>
+
+<symbol id="bell" viewBox="0 0 24 24">
+    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+    <path d="M10 21h4"/>
+</symbol>
+
+<symbol id="settings" viewBox="0 0 24 24">
+    <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/>
+    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.9 1.9-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2.68v-.09a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.9-1.9.06-.06A1.7 1.7 0 0 0 7.6 15a1.7 1.7 0 0 0-1.56-1.03H5.95v-2.68h.09A1.7 1.7 0 0 0 7.6 10.26a1.7 1.7 0 0 0-.34-1.88L7.2 8.32l1.9-1.9.06.06a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56V5h2.68v.26a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.9 1.9-.06.06a1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0 1.56 1.03H20v2.68h-.26A1.7 1.7 0 0 0 19.4 15Z"/>
+</symbol>
+
+<symbol id="user" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 21c.7-4 3.3-6 8-6s7.3 2 8 6"/>
+</symbol>
+
+<symbol id="help" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-.9.7-1.7 1.2-1.7 2.7"/>
+    <path d="M12 17h.01"/>
+</symbol>
+
+<symbol id="logout" viewBox="0 0 24 24">
+    <path d="M10 17l5-5-5-5"/>
+    <path d="M15 12H3"/>
+    <path d="M21 4v16"/>
+</symbol>
+
+<symbol id="clock" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M12 7v5l3 2"/>
+</symbol>
+
+<symbol id="check" viewBox="0 0 24 24">
+    <path d="m5 12 4 4L19 6"/>
+</symbol>
+
+</svg>
+
+
+<!-- =====================================================
+     DESKTOP SIDEBAR
+===================================================== -->
+
 <div class="app">
 
 <aside class="sidebar">
-    <div class="logo">
-        <div class="logo-icon">🌾</div>
-        <span>KisanQueue</span>
-    </div>
 
-    <div class="menu-label">Main Menu</div>
-    <div class="menu">
-        <a class="active" href="#">🏠 <span>Dashboard</span></a>
-        <a href="#booking">📅 <span>Book Slot</span></a>
-        <a href="#queue">📍 <span>Live Queue</span></a>
-        <a href="#procurement">🌾 <span>Procurement</span></a>
-        <a href="#payment">💳 <span>Payments</span></a>
-    </div>
+<div class="logo">
 
-    <div class="menu-label">Account</div>
-    <div class="menu">
-        <a href="#">🔔 <span>Notifications</span></a>
-        <a href="#">⚙️ <span>Settings</span></a>
-    </div>
+<div class="logo-icon">
 
-    <div class="profile">
-        <div class="avatar">RK</div>
-        <div>
-            <strong>Ramesh Kumar</strong>
-            <small>Farmer ID: KQ10284</small>
-        </div>
-    </div>
+<svg class="icon">
+<use href="#leaf"/>
+</svg>
+
+</div>
+
+KisanQueue
+
+</div>
+
+
+<div class="menu-label">
+Main Menu
+</div>
+
+
+<div class="menu">
+
+<a href="#home" class="active">
+<svg class="icon-sm">
+<use href="#home"/>
+</svg>
+Dashboard
+</a>
+
+<a href="#booking">
+<svg class="icon-sm">
+<use href="#calendar"/>
+</svg>
+Book Slot
+</a>
+
+<a href="#queue">
+<svg class="icon-sm">
+<use href="#map-pin"/>
+</svg>
+Live Queue
+</a>
+
+<a href="#procurement">
+<svg class="icon-sm">
+<use href="#leaf"/>
+</svg>
+Procurement
+</a>
+
+<a href="#payment">
+<svg class="icon-sm">
+<use href="#wallet"/>
+</svg>
+Payments
+</a>
+
+</div>
+
+
+<div class="menu-label">
+Account
+</div>
+
+
+<div class="menu">
+
+<a href="#notifications">
+<svg class="icon-sm">
+<use href="#bell"/>
+</svg>
+Notifications
+</a>
+
+<a href="#">
+<svg class="icon-sm">
+<use href="#settings"/>
+</svg>
+Settings
+</a>
+
+</div>
+
+
+<div class="profile">
+
+<div class="avatar">
+RK
+</div>
+
+<div>
+
+<strong>Ramesh Kumar</strong>
+
+<small>
+Farmer ID: KQ10284
+</small>
+
+</div>
+
+</div>
+
 </aside>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
 <main class="main">
 
-<header class="topbar">
-    <div class="top-title">Farmer Portal / <strong>Dashboard</strong></div>
 
-    <div class="top-actions">
-        <button class="icon-btn" onclick="showToast('🔔 You have 2 new notifications')">
-            🔔<span class="notify-dot"></span>
-        </button>
-        <button class="icon-btn" onclick="showToast('👋 Welcome back, Ramesh!')">👤</button>
-    </div>
+<header class="topbar">
+
+<div class="top-title">
+
+Farmer Portal /
+<strong>Dashboard</strong>
+
+</div>
+
+
+<div class="top-actions">
+
+<button class="icon-btn"
+onclick="showToast('You have 2 new notifications')">
+
+<svg class="icon">
+<use href="#bell"/>
+</svg>
+
+<span class="notify-dot"></span>
+
+</button>
+
+
+<button class="icon-btn"
+onclick="showToast('Welcome back, Ramesh!')">
+
+<svg class="icon">
+<use href="#user"/>
+</svg>
+
+</button>
+
+</div>
+
 </header>
+
 
 <div class="content">
 
-<div class="welcome">
-    <div>
-        <h1>Good morning, Ramesh 👋</h1>
-        <p>Here's what's happening with your procurement today.</p>
-    </div>
-    <div class="date-pill">📅 <span id="today"></span></div>
+
+<!-- WELCOME -->
+
+<div class="welcome" id="home">
+
+<div>
+
+<h1>
+Good morning, Ramesh 👋
+</h1>
+
+<p>
+Here's what's happening with your procurement today.
+</p>
+
 </div>
+
+
+<div class="date-pill">
+
+<svg class="icon-sm">
+<use href="#calendar"/>
+</svg>
+
+<span id="today"></span>
+
+</div>
+
+</div>
+
+
+<!-- KPI -->
 
 <div class="kpis">
 
-    <div class="kpi">
-        <div class="kpi-icon">📍</div>
-        <small>Queue Position</small>
-        <strong id="kpiQueue">18</strong>
-        <span class="green" style="font-size:11px">↓ 3 positions today</span>
-    </div>
+<div class="kpi">
 
-    <div class="kpi">
-        <div class="kpi-icon">⏱️</div>
-        <small>Estimated Turn</small>
-        <strong>10:58 AM</strong>
-        <span class="green" style="font-size:11px">On schedule</span>
-    </div>
+<div class="kpi-icon">
+<svg class="icon">
+<use href="#map-pin"/>
+</svg>
+</div>
 
-    <div class="kpi">
-        <div class="kpi-icon">🌾</div>
-        <small>Expected Procurement</small>
-        <strong>520 kg</strong>
-        <span style="font-size:11px;color:var(--muted)">Wheat</span>
-    </div>
+<small>Queue Position</small>
 
-    <div class="kpi">
-        <div class="kpi-icon">💳</div>
-        <small>Payment Status</small>
-        <strong class="green">Processing</strong>
-        <span style="font-size:11px;color:var(--muted)">₹12,480 expected</span>
-    </div>
+<strong id="kpiQueue">
+18
+</strong>
+
+<span style="font-size:10px;color:var(--green)">
+↓ 3 positions today
+</span>
 
 </div>
+
+
+<div class="kpi">
+
+<div class="kpi-icon">
+<svg class="icon">
+<use href="#clock"/>
+</svg>
+</div>
+
+<small>Estimated Turn</small>
+
+<strong>
+10:58 AM
+</strong>
+
+<span style="font-size:10px;color:var(--green)">
+On schedule
+</span>
+
+</div>
+
+
+<div class="kpi">
+
+<div class="kpi-icon">
+<svg class="icon">
+<use href="#leaf"/>
+</svg>
+</div>
+
+<small>Expected Procurement</small>
+
+<strong>
+520 kg
+</strong>
+
+<span style="font-size:10px;color:var(--muted)">
+Wheat
+</span>
+
+</div>
+
+
+<div class="kpi">
+
+<div class="kpi-icon">
+<svg class="icon">
+<use href="#wallet"/>
+</svg>
+</div>
+
+<small>Payment Status</small>
+
+<strong class="green">
+Processing
+</strong>
+
+<span style="font-size:10px;color:var(--muted)">
+₹12,480 expected
+</span>
+
+</div>
+
+</div>
+
 
 <div class="grid">
 
+
+<!-- LEFT -->
+
 <div>
+
+
+<!-- QUEUE -->
 
 <section class="card" id="queue">
-    <div class="card-head">
-        <h2>📍 Live Queue Status</h2>
-        <span>● Updating live</span>
-    </div>
 
-    <div class="queue-main">
+<div class="card-head">
 
-        <div class="ring" id="ring">
-            <div class="ring-content">
-                <strong id="queueBig">18</strong>
-                <small>POSITION</small>
-            </div>
-        </div>
+<h2>
+Live Queue Status
+</h2>
 
-        <div class="queue-info">
-            <h3>Krishi Seva Centre</h3>
-            <p>Nashik District · Wheat Procurement</p>
+<span>
+● Updating live
+</span>
 
-            <div class="big-time" id="turnTime">~42 min</div>
+</div>
 
-            <p style="margin-bottom:9px">Queue progress</p>
-            <div class="queue-bar"><i id="queueProgress"></i></div>
 
-            <div class="queue-details">
-                <div class="detail"><small>Farmers Ahead</small><strong id="ahead">17 farmers</strong></div>
-                <div class="detail"><small>Serving Now</small><strong>Token #17</strong></div>
-                <div class="detail"><small>Centre Status</small><strong class="green">Open</strong></div>
-            </div>
-        </div>
+<div class="queue-main">
 
-    </div>
+<div class="ring" id="ring">
 
-    <div class="checkin">
-        <div>
-            <strong>📱 Check-in Status</strong>
-            <span> Your slot is confirmed</span>
-        </div>
-        <button class="btn btn-primary" style="padding:9px 13px;font-size:11px" onclick="showToast('✅ You are already checked in!')">CHECKED IN</button>
-    </div>
+<div class="ring-content">
+
+<strong id="queueBig">
+18
+</strong>
+
+<small>
+POSITION
+</small>
+
+</div>
+
+</div>
+
+
+<div class="queue-info">
+
+<h3>
+Krishi Seva Centre
+</h3>
+
+<p>
+Nashik District · Wheat Procurement
+</p>
+
+
+<div class="big-time"
+id="turnTime">
+
+~42 min
+
+</div>
+
+
+<p>
+Queue progress
+</p>
+
+
+<div class="queue-bar">
+
+<i id="queueProgress"></i>
+
+</div>
+
+
+<div class="queue-details">
+
+<div class="detail">
+
+<small>
+Farmers Ahead
+</small>
+
+<strong id="ahead">
+17 farmers
+</strong>
+
+</div>
+
+
+<div class="detail">
+
+<small>
+Serving Now
+</small>
+
+<strong>
+Token #17
+</strong>
+
+</div>
+
+
+<div class="detail">
+
+<small>
+Centre Status
+</small>
+
+<strong class="green">
+Open
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="checkin">
+
+<div>
+
+<strong>
+Check-in Status
+</strong>
+
+<span>
+Your slot is confirmed
+</span>
+
+</div>
+
+<button
+class="btn btn-primary"
+onclick="showToast('You are already checked in!')">
+
+CHECKED IN
+
+</button>
+
+</div>
+
 </section>
+
+
+<!-- BOOK SLOT -->
 
 <section class="card" id="booking">
-    <div class="card-head">
-        <h2>📅 Book Procurement Slot</h2>
-        <span>Select a convenient time</span>
-    </div>
 
-    <div class="slot-form">
+<div class="card-head">
 
-        <div class="field">
-            <label>PROCUREMENT CENTRE</label>
-            <select>
-                <option>Krishi Seva Centre — Nashik</option>
-                <option>Agri Procurement Hub — Pune</option>
-                <option>Kisan Suvidha Centre — Ahmednagar</option>
-            </select>
-        </div>
+<h2>
+Book Procurement Slot
+</h2>
 
-        <div class="field">
-            <label>CROP</label>
-            <select>
-                <option>🌾 Wheat</option>
-                <option>🌽 Maize</option>
-                <option>🌾 Rice</option>
-                <option>🫘 Soybean</option>
-            </select>
-        </div>
+<span>
+Select a convenient time
+</span>
 
-        <div class="field">
-            <label>DATE</label>
-            <input type="date" id="slotDate">
-        </div>
+</div>
 
-        <div class="field">
-            <label>QUANTITY</label>
-            <input type="number" value="520" min="1">
-        </div>
 
-    </div>
+<div class="slot-form">
 
-    <div style="margin-top:18px">
-        <label style="font-size:11px;font-weight:800;color:#56645b">AVAILABLE TIME SLOTS</label>
+<div class="field">
 
-        <div class="slot-buttons">
-            <button class="slot" onclick="selectSlot(this)">09:00 AM</button>
-            <button class="slot selected" onclick="selectSlot(this)">10:30 AM</button>
-            <button class="slot" onclick="selectSlot(this)">12:00 PM</button>
-            <button class="slot" onclick="selectSlot(this)">01:30 PM</button>
-            <button class="slot disabled">03:00 PM</button>
-            <button class="slot" onclick="selectSlot(this)">04:30 PM</button>
-        </div>
-    </div>
+<label>
+PROCUREMENT CENTRE
+</label>
 
-    <button class="confirm" onclick="confirmBooking()">✓ Confirm Procurement Slot</button>
+<select>
+
+<option>
+Krishi Seva Centre — Nashik
+</option>
+
+<option>
+Agri Procurement Hub — Pune
+</option>
+
+<option>
+Kisan Suvidha Centre — Ahmednagar
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+CROP
+</label>
+
+<select>
+
+<option>
+Wheat
+</option>
+
+<option>
+Maize
+</option>
+
+<option>
+Rice
+</option>
+
+<option>
+Soybean
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+DATE
+</label>
+
+<input type="date" id="slotDate">
+
+</div>
+
+
+<div class="field">
+
+<label>
+QUANTITY
+</label>
+
+<input type="number" value="520">
+
+</div>
+
+</div>
+
+
+<div style="margin-top:18px">
+
+<label style="
+font-size:10px;
+font-weight:800;
+color:#56645b;
+">
+
+AVAILABLE TIME SLOTS
+
+</label>
+
+
+<div class="slot-buttons">
+
+<button class="slot"
+onclick="selectSlot(this)">
+09:00 AM
+</button>
+
+<button class="slot selected"
+onclick="selectSlot(this)">
+10:30 AM
+</button>
+
+<button class="slot"
+onclick="selectSlot(this)">
+12:00 PM
+</button>
+
+<button class="slot"
+onclick="selectSlot(this)">
+01:30 PM
+</button>
+
+<button class="slot disabled">
+03:00 PM
+</button>
+
+<button class="slot"
+onclick="selectSlot(this)">
+04:30 PM
+</button>
+
+</div>
+
+</div>
+
+
+<button class="confirm"
+onclick="confirmBooking()">
+
+Confirm Procurement Slot
+
+</button>
+
 </section>
+
+
+<!-- PROCUREMENT -->
 
 <section class="card" id="procurement">
-    <div class="card-head">
-        <h2>🌾 Procurement Journey</h2>
-        <span>Booking #KQ-82914</span>
-    </div>
 
-    <div class="timeline">
+<div class="card-head">
 
-        <div class="event done">
-            <strong>Slot Booked</strong>
-            <p>10:30 AM · Today</p>
-        </div>
+<h2>
+Procurement Journey
+</h2>
 
-        <div class="event done">
-            <strong>Checked In</strong>
-            <p>Centre check-in completed</p>
-        </div>
+<span>
+Booking #KQ-82914
+</span>
 
-        <div class="event active">
-            <strong>Waiting in Queue</strong>
-            <p>You are currently #18 in the queue</p>
-        </div>
+</div>
 
-        <div class="event">
-            <strong>Quality Verification</strong>
-            <p>Pending</p>
-        </div>
 
-        <div class="event">
-            <strong>Procurement Complete</strong>
-            <p>Pending</p>
-        </div>
+<div class="timeline">
 
-        <div class="event">
-            <strong>Payment Released</strong>
-            <p>Pending</p>
-        </div>
+<div class="event done">
 
-    </div>
+<strong>
+Slot Booked
+</strong>
+
+<p>
+10:30 AM · Today
+</p>
+
+</div>
+
+
+<div class="event done">
+
+<strong>
+Checked In
+</strong>
+
+<p>
+Centre check-in completed
+</p>
+
+</div>
+
+
+<div class="event active">
+
+<strong>
+Waiting in Queue
+</strong>
+
+<p>
+You are currently #18 in the queue
+</p>
+
+</div>
+
+
+<div class="event">
+
+<strong>
+Quality Verification
+</strong>
+
+<p>
+Pending
+</p>
+
+</div>
+
+
+<div class="event">
+
+<strong>
+Procurement Complete
+</strong>
+
+<p>
+Pending
+</p>
+
+</div>
+
+
+<div class="event">
+
+<strong>
+Payment Released
+</strong>
+
+<p>
+Pending
+</p>
+
+</div>
+
+</div>
+
 </section>
+
+</div>
+
+
+<!-- RIGHT -->
+
+<div>
+
+
+<!-- NOTIFICATIONS -->
+
+<section class="card" id="notifications">
+
+<div class="card-head">
+
+<h2>
+Notifications
+</h2>
+
+<span
+onclick="markRead()"
+style="
+cursor:pointer;
+color:var(--green);
+">
+
+Mark all read
+
+</span>
+
+</div>
+
+
+<div class="notification">
+
+<div class="n-icon">
+
+<svg class="icon-sm">
+<use href="#map-pin"/>
+</svg>
 
 </div>
 
 <div>
 
-<section class="card">
-    <div class="card-head">
-        <h2>🔔 Notifications</h2>
-        <span onclick="markRead()" style="cursor:pointer;color:var(--green)">Mark all read</span>
-    </div>
+<strong>
+Your queue moved!
+</strong>
 
-    <div id="notifications">
+<p>
+You are now #18. Estimated wait is 42 minutes.
+</p>
 
-        <div class="notification unread">
-            <div class="n-icon">📍</div>
-            <div>
-                <strong>Your queue moved!</strong>
-                <p>You are now #18. Estimated wait is 42 minutes.</p>
-            </div>
-        </div>
+</div>
 
-        <div class="notification unread">
-            <div class="n-icon">💳</div>
-            <div>
-                <strong>Payment processing</strong>
-                <p>Your previous procurement payment is being processed.</p>
-            </div>
-        </div>
+</div>
 
-        <div class="notification">
-            <div class="n-icon">✅</div>
-            <div>
-                <strong>Slot confirmed</strong>
-                <p>Your 10:30 AM procurement slot has been confirmed.</p>
-            </div>
-        </div>
 
-    </div>
+<div class="notification">
+
+<div class="n-icon">
+
+<svg class="icon-sm">
+<use href="#wallet"/>
+</svg>
+
+</div>
+
+<div>
+
+<strong>
+Payment processing
+</strong>
+
+<p>
+Your previous procurement payment is being processed.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="notification">
+
+<div class="n-icon">
+
+<svg class="icon-sm">
+<use href="#check"/>
+</svg>
+
+</div>
+
+<div>
+
+<strong>
+Slot confirmed
+</strong>
+
+<p>
+Your 10:30 AM procurement slot has been confirmed.
+</p>
+
+</div>
+
+</div>
+
 </section>
+
+
+<!-- PAYMENT -->
 
 <section class="card payment" id="payment">
-    <div class="card-head">
-        <h2>💳 Payment Tracking</h2>
-        <span>In progress</span>
-    </div>
 
-    <div class="payment-label">EXPECTED PAYMENT</div>
-    <div class="amount">₹12,480</div>
+<div class="card-head">
 
-    <div class="payment-row"><span>Procurement value</span><strong>₹12,480</strong></div>
-    <div class="payment-row"><span>Quality verification</span><strong>Completed</strong></div>
-    <div class="payment-row"><span>Bank verification</span><strong>Completed</strong></div>
+<h2>
+Payment Tracking
+</h2>
 
-    <div class="pay-progress"><i></i></div>
+<span>
+In progress
+</span>
 
-    <div class="payment-row" style="margin-top:12px">
-        <span>Payment progress</span><strong>78%</strong>
-    </div>
+</div>
+
+
+<div class="payment-label">
+EXPECTED PAYMENT
+</div>
+
+
+<div class="amount">
+₹12,480
+</div>
+
+
+<div class="payment-row">
+
+<span>
+Procurement value
+</span>
+
+<strong>
+₹12,480
+</strong>
+
+</div>
+
+
+<div class="payment-row">
+
+<span>
+Quality verification
+</span>
+
+<strong>
+Completed
+</strong>
+
+</div>
+
+
+<div class="payment-row">
+
+<span>
+Bank verification
+</span>
+
+<strong>
+Completed
+</strong>
+
+</div>
+
+
+<div class="pay-progress">
+<i></i>
+</div>
+
+
+<div class="payment-row">
+
+<span>
+Payment progress
+</span>
+
+<strong>
+78%
+</strong>
+
+</div>
+
 </section>
+
+
+<!-- CENTRE -->
 
 <section class="card">
-    <div class="card-head">
-        <h2>🏢 Centre Information</h2>
-    </div>
 
-    <h3 style="font-size:15px">Krishi Seva Centre</h3>
-    <p style="color:var(--muted);font-size:12px;margin-top:5px">Nashik District, Maharashtra</p>
+<div class="card-head">
 
-    <div class="queue-details" style="margin-top:15px">
-        <div class="detail"><small>Opening</small><strong>08:00 AM</strong></div>
-        <div class="detail"><small>Closing</small><strong>06:00 PM</strong></div>
-        <div class="detail"><small>Status</small><strong class="green">OPEN</strong></div>
-    </div>
+<h2>
+Centre Information
+</h2>
+
+</div>
+
+
+<h3 style="
+font-size:15px;
+color:var(--dark);
+">
+
+Krishi Seva Centre
+
+</h3>
+
+
+<p style="
+color:var(--muted);
+font-size:11px;
+margin-top:5px;
+">
+
+Nashik District, Maharashtra
+
+</p>
+
+
+<div class="queue-details">
+
+<div class="detail">
+
+<small>
+Opening
+</small>
+
+<strong>
+08:00 AM
+</strong>
+
+</div>
+
+
+<div class="detail">
+
+<small>
+Closing
+</small>
+
+<strong>
+06:00 PM
+</strong>
+
+</div>
+
+
+<div class="detail">
+
+<small>
+Status
+</small>
+
+<strong class="green">
+OPEN
+</strong>
+
+</div>
+
+</div>
+
 </section>
 
 </div>
+
 </div>
 
 </div>
+
 </main>
+
 </div>
 
-<div class="toast" id="toast"></div>
 
-<div class="modal" id="modal">
-    <div class="modal-box">
-        <div class="modal-icon">🎉</div>
-        <h2>Slot Confirmed!</h2>
-        <p id="modalText">
-            Your procurement slot has been successfully booked.
-        </p>
-        <button onclick="closeModal()">Awesome ✓</button>
-    </div>
+<!-- =====================================================
+     MOBILE BOTTOM NAV
+===================================================== -->
+
+<nav class="mobile-nav">
+
+
+<button class="active"
+onclick="mobileNavigate('home',this)">
+
+<svg class="icon">
+<use href="#home"/>
+</svg>
+
+<span>
+Home
+</span>
+
+</button>
+
+
+<button
+onclick="mobileNavigate('booking',this)">
+
+<svg class="icon">
+<use href="#calendar"/>
+</svg>
+
+<span>
+Book
+</span>
+
+</button>
+
+
+<button
+onclick="mobileNavigate('queue',this)">
+
+<svg class="icon">
+<use href="#map-pin"/>
+</svg>
+
+<span>
+Queue
+</span>
+
+</button>
+
+
+<button
+onclick="mobileNavigate('payment',this)">
+
+<svg class="icon">
+<use href="#wallet"/>
+</svg>
+
+<span>
+Payment
+</span>
+
+</button>
+
+
+<button
+onclick="openMore()">
+
+<svg class="icon">
+<use href="#settings"/>
+</svg>
+
+<span>
+More
+</span>
+
+</button>
+
+
+</nav>
+
+
+<!-- =====================================================
+     DRAWER OVERLAY
+===================================================== -->
+
+<div class="drawer-overlay"
+id="drawerOverlay"
+onclick="closeMore()">
 </div>
+
+
+<!-- =====================================================
+     MORE DRAWER
+===================================================== -->
+
+<aside class="more-drawer"
+id="moreDrawer">
+
+
+<div class="drawer-header">
+
+<h2>
+More
+</h2>
+
+<button
+class="drawer-close"
+onclick="closeMore()">
+
+✕
+
+</button>
+
+</div>
+
+
+<div class="drawer-profile">
+
+<div class="avatar">
+RK
+</div>
+
+<div>
+
+<strong>
+Ramesh Kumar
+</strong>
+
+<small>
+Farmer ID: KQ10284
+</small>
+
+</div>
+
+</div>
+
+
+<div class="drawer-links">
+
+
+<button
+class="drawer-link"
+onclick="drawerAction('Procurement Journey')">
+
+<div class="drawer-icon">
+
+<svg class="icon">
+<use href="#leaf"/>
+</svg>
+
+</div>
+
+Procurement Journey
+
+</button>
+
+
+<button
+class="drawer-link"
+onclick="drawerAction('Notifications')">
+
+<div class="drawer-icon">
+
+<svg class="icon">
+<use href="#bell"/>
+</svg>
+
+</div>
+
+Notifications
+
+</button>
+
+
+<button
+class="drawer-link"
+onclick="drawerAction('Settings')">
+
+<div class="drawer-icon">
+
+<svg class="icon">
+<use href="#settings"/>
+</svg>
+
+</div>
+
+Settings
+
+</button>
+
+
+<button
+class="drawer-link"
+onclick="drawerAction('My Profile')">
+
+<div class="drawer-icon">
+
+<svg class="icon">
+<use href="#user"/>
+</svg>
+
+</div>
+
+My Profile
+
+</button>
+
+
+<div class="drawer-divider"></div>
+
+
+<button
+class="drawer-link"
+onclick="drawerAction('Help & Support')">
+
+<div class="drawer-icon">
+
+<svg class="icon">
+<use href="#help"/>
+</svg>
+
+</div>
+
+Help & Support
+
+</button>
+
+
+<button
+class="drawer-link"
+onclick="drawerAction('Logout')">
+
+<div class="drawer-icon">
+
+<svg class="icon">
+<use href="#logout"/>
+</svg>
+
+</div>
+
+Logout
+
+</button>
+
+</div>
+
+
+<div class="drawer-help">
+
+<strong>
+Need help?
+</strong>
+
+<p>
+Our farmer support team is available Monday to Saturday,
+9 AM to 6 PM.
+</p>
+
+</div>
+
+
+</aside>
+
+
+<!-- TOAST -->
+
+<div class="toast"
+id="toast">
+</div>
+
+
+<!-- MODAL -->
+
+<div class="modal"
+id="modal">
+
+<div class="modal-box">
+
+<div class="modal-icon">
+
+<svg class="icon-lg">
+<use href="#check"/>
+</svg>
+
+</div>
+
+
+<h2>
+Slot Confirmed!
+</h2>
+
+
+<p id="modalText">
+Your procurement slot has been successfully booked.
+</p>
+
+
+<button onclick="closeModal()">
+Awesome ✓
+</button>
+
+</div>
+
+</div>
+
 
 <script>
 
-const today=new Date();
-document.getElementById("today").textContent=
-today.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
+/* ================= DATE ================= */
 
-const dateInput=document.getElementById("slotDate");
-dateInput.value=new Date().toISOString().split("T")[0];
+const today = new Date();
+
+document.getElementById("today").textContent =
+today.toLocaleDateString("en-IN",{
+    day:"2-digit",
+    month:"short",
+    year:"numeric"
+});
+
+
+/* ================= DATE INPUT ================= */
+
+document.getElementById("slotDate").value =
+new Date().toISOString().split("T")[0];
+
+
+/* ================= SLOT ================= */
 
 let selectedSlot="10:30 AM";
 
 function selectSlot(btn){
-    if(btn.classList.contains("disabled")) return;
 
-    document.querySelectorAll(".slot").forEach(s=>s.classList.remove("selected"));
+    if(btn.classList.contains("disabled"))
+        return;
+
+    document
+    .querySelectorAll(".slot")
+    .forEach(x=>x.classList.remove("selected"));
+
     btn.classList.add("selected");
-    selectedSlot=btn.textContent.trim();
 
-    showToast("🕐 Slot selected: "+selectedSlot);
+    selectedSlot =
+    btn.textContent.trim();
+
+    showToast(
+        "Slot selected: "+selectedSlot
+    );
 }
+
+
+/* ================= BOOKING ================= */
 
 function confirmBooking(){
 
-    document.getElementById("modalText").textContent=
+    document.getElementById("modalText")
+    .textContent =
     `Your procurement slot at Krishi Seva Centre is confirmed for ${selectedSlot}. Please arrive 10 minutes before your slot.`;
 
-    document.getElementById("modal").classList.add("show");
+    document
+    .getElementById("modal")
+    .classList.add("show");
 }
+
 
 function closeModal(){
-    document.getElementById("modal").classList.remove("show");
-    showToast("✅ Booking saved successfully!");
+
+    document
+    .getElementById("modal")
+    .classList.remove("show");
+
+    showToast(
+        "Booking saved successfully!"
+    );
 }
 
+
+/* ================= TOAST ================= */
+
 function showToast(message){
-    const toast=document.getElementById("toast");
+
+    const toast =
+    document.getElementById("toast");
+
     toast.textContent=message;
+
     toast.classList.add("show");
 
     clearTimeout(window.toastTimer);
-    window.toastTimer=setTimeout(()=>{
+
+    window.toastTimer =
+    setTimeout(()=>{
         toast.classList.remove("show");
     },2800);
 }
 
+
+/* ================= NOTIFICATIONS ================= */
+
 function markRead(){
-    document.querySelectorAll(".notification").forEach(n=>n.classList.remove("unread"));
-    showToast("✓ All notifications marked as read");
+
+    showToast(
+        "All notifications marked as read"
+    );
 }
+
+
+/* ================= LIVE QUEUE ================= */
 
 let queue=18;
 
 setInterval(()=>{
 
-    if(queue<=5)return;
+    if(queue<=5)
+        return;
 
     queue--;
 
-    document.getElementById("queueBig").textContent=queue;
-    document.getElementById("kpiQueue").textContent=queue;
-    document.getElementById("ahead").textContent=(queue-1)+" farmers";
+    document.getElementById("queueBig")
+    .textContent=queue;
 
-    const minutes=queue*2.3;
-    document.getElementById("turnTime").textContent="~"+Math.round(minutes)+" min";
+    document.getElementById("kpiQueue")
+    .textContent=queue;
 
-    const progress=Math.max(35,100-(queue*2.1));
+    document.getElementById("ahead")
+    .textContent=(queue-1)+" farmers";
 
-    document.getElementById("queueProgress").style.width=progress+"%";
-    document.getElementById("ring").style.background=
-        `conic-gradient(#168447 ${progress}%, #e7eee8 0)`;
+    const minutes =
+    Math.round(queue*2.3);
 
-    showToast("📍 Queue updated — you moved to #"+queue);
+    document.getElementById("turnTime")
+    .textContent="~"+minutes+" min";
+
+    const progress =
+    Math.max(35,100-(queue*2.1));
+
+    document.getElementById("queueProgress")
+    .style.width=progress+"%";
+
+    document.getElementById("ring")
+    .style.background=
+    `conic-gradient(#168447 ${progress}%,#e7eee8 0)`;
 
 },10000);
+
+
+/* =====================================================
+   MOBILE NAVIGATION
+===================================================== */
+
+function mobileNavigate(section,button){
+
+    document
+    .querySelectorAll(".mobile-nav button")
+    .forEach(x=>{
+        x.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    if(section==="home"){
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+        return;
+    }
+
+    const target =
+    document.getElementById(section);
+
+    if(target){
+
+        const position =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        75;
+
+        window.scrollTo({
+            top:position,
+            behavior:"smooth"
+        });
+
+    }
+
+}
+
+
+/* =====================================================
+   MORE DRAWER
+===================================================== */
+
+function openMore(){
+
+    document
+    .getElementById("moreDrawer")
+    .classList.add("show");
+
+    document
+    .getElementById("drawerOverlay")
+    .classList.add("show");
+
+    document.body.style.overflow="hidden";
+}
+
+
+function closeMore(){
+
+    document
+    .getElementById("moreDrawer")
+    .classList.remove("show");
+
+    document
+    .getElementById("drawerOverlay")
+    .classList.remove("show");
+
+    document.body.style.overflow="";
+}
+
+
+function drawerAction(item){
+
+    closeMore();
+
+    setTimeout(()=>{
+
+        showToast(
+            item+" selected"
+        );
+
+    },250);
+
+}
+
+
+/* ESCAPE TO CLOSE DRAWER */
+
+document.addEventListener(
+    "keydown",
+    e=>{
+
+        if(e.key==="Escape"){
+            closeMore();
+        }
+
+    }
+);
 
 </script>
 
 </body>
 </html>
+```
